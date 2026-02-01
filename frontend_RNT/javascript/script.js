@@ -68,3 +68,17 @@ const products = [
     }
 
 ];
+
+const productsContainer = document.getElementById("products");
+
+products.forEach(product => {
+    const article = document.createElement("article");
+    article.innerHTML = `
+    <h3>${product.name}</h3>
+    <p class="description">${product.description}</p>
+    <p class="price">KES ${product.price}</p>
+    <button>Add to Cart</button>
+    `;
+
+    productsContainer.appendChild(article);
+})
