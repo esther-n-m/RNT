@@ -71,6 +71,11 @@ const products = [
 
 const productsContainer = document.getElementById("products");
 
+if (!productsContainer) {
+  console.error("Products container not found");
+}
+
+
 products.forEach(product => {
     const article = document.createElement("article");
     article.innerHTML = `
