@@ -87,3 +87,5 @@ products.forEach(product => {
 
     productsContainer.appendChild(article);
 })
+
+let cart = [];
