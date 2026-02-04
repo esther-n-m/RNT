@@ -124,3 +124,12 @@ function renderCart() {
     });
 }
 
+function calculateTotal() {
+    let total = 0;
+
+    cart.forEach(item => {
+        total += item.price;
+    });
+
+    return total;
+}
