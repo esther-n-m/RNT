@@ -165,3 +165,4 @@ function calculateTotal() {
 
     return total;
 }
+renderCart();
