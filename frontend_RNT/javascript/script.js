@@ -129,7 +129,9 @@ function renderCart() {
     cart.forEach((item, index) => {
         const div = document.createElement("div");
 
-        div.textContent = item.name + " - KES " + item.price;
+        div.textContent =
+        item.name + " x" + item.quantity + " - KES " + (item.price * item.quantity);
+
 
         const removeBtn = document.createElement("button");
         removeBtn.textContent = "Remove";
