@@ -1,4 +1,6 @@
-console.log("JS is connected")
+console.log("JS is connected");
+
+let cart = [];
 
 const products = [
     {
@@ -78,14 +80,31 @@ if (!productsContainer) {
 
 products.forEach(product => {
     const article = document.createElement("article");
-    article.innerHTML = `
-    <h3>${product.name}</h3>
-    <p class="description">${product.description}</p>
-    <p class="price">KES ${product.price}</p>
-    <button>Add to Cart</button>
-    `;
+    
+    const h3 = document.createElement("h3");
+    h3.textContent= product.name;
+
+    const description = document.createElement("p");
+    description.textContent = product.description;
+
+    const price = document.createElement("p");
+    price.textContent = "KES" + product.price;
+
+    const button = document.createElement("button");
+    button.textContent = "Add to Cart";
+
+    button.addEventListener("click", () => {
+    cart.push(product);
+    console.log(cart);
+    });
+
+
+    article.appendChild(h3);
+    article.appendChild(description);
+    article.appendChild(price);
+    article.appendChild(button);
 
     productsContainer.appendChild(article);
 })
 
-let cart = [];
+
