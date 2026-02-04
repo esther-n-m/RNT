@@ -78,6 +78,13 @@ if (!productsContainer) {
 }
 
 
+const cartContainer = document.getElementById("cart");
+
+if (!cartContainer) {
+    console.error("Cart container not found");
+}
+
+
 products.forEach(product => {
     const article = document.createElement("article");
     
