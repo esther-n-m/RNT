@@ -115,14 +115,30 @@ products.forEach(product => {
 })
 
 function renderCart() {
-    cartContainer.innerHTML = ""; //avoids repetition
+    cartContainer.innerHTML = "";
 
-    cart.forEach(item => {
-        const p = document.createElement("p");
-        p.textContent = item.name + " - KES " + item.price;
-        cartContainer.appendChild(p);
+    cart.forEach((item, index) => {
+        const div = document.createElement("div");
+
+        div.textContent = item.name + " - KES " + item.price;
+
+        const removeBtn = document.createElement("button");
+        removeBtn.textContent = "Remove";
+
+        removeBtn.addEventListener("click", () => {
+            cart.splice(index, 1);
+            saveCart();
+            renderCart();
+        });
+
+        div.appendChild(removeBtn);
+        cartContainer.appendChild(div);
     });
+
+    document.getElementById("total").textContent =
+        "Total: KES " + calculateTotal();
 }
+
 
 function calculateTotal() {
     let total = 0;
