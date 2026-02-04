@@ -1,50 +1,49 @@
 # RNT Scented Candles
 
-A simple front-end e-commerce prototype for selling scented candles and decorative pillows.  
-This project is built to practice core web development concepts using vanilla JavaScript.
+# RNT Scented Candles
+
+A simple e-commerce web application for selling scented candles and decorative pillows.
+
+This project is built step-by-step as a learning project to understand how real web applications work, from static HTML to dynamic JavaScript and persistent state.
 
 ## Features
 
-- Dynamic product listing from JavaScript data
-- Each product displays:
-  - Name
-  - Description
-  - Price
-- Add to cart functionality
-- Real-time cart display
+- Product listing generated dynamically from JavaScript
+- Add products to cart
+- Increase quantity when same product is added multiple times
+- Remove items from cart
+- Cart persists using localStorage (survives page refresh)
+- Automatic total price calculation
 
 ## Tech Stack
 
-- HTML
-- CSS (in progress)
-- JavaScript
+- HTML (structure)
+- CSS (styling – upcoming)
+- JavaScript (logic and interactivity)
+- Browser localStorage (temporary database)
 
-## How to Run
+## Current Status
 
-1. Download or clone the project
-2. Open `index.html` in a browser
-3. Open DevTools → Console to see logs
+**Week 1:**  
+HTML structure and product layout
 
-## Project Progress
+**Week 2:**  
+Dynamic product rendering with JavaScript
 
-Week 1: Basic HTML structure  
-Week 2: Dynamic product rendering  
-Week 3: Cart functionality  
+**Week 3:**  
+Shopping cart system (add & remove)
 
-## Planned Improvements
+**Week 4:**  
+Persistent cart, quantity system, and total price calculation
 
-- Cart total price
-- Item quantities
-- Remove items from cart
-- Product images
-- Save cart using localStorage
-- Better UI with CSS
-- Backend integration (future)
+## Planned Next Steps
 
-## Purpose
+- Week 5: Styling with CSS
+- Week 6: Better UI/UX (cards, grid, buttons)
+- Week 7: Product images
+- Week 8: Checkout simulation
+- Week 9+: Backend with Node.js
 
-This project is a learning exercise to:
-- Understand DOM manipulation
-- Practice JavaScript logic
-- Learn how e-commerce systems work at a basic level
-- Build foundations for full-stack development
+## Author
+
+Esther – learning full-stack development through real projects.
