@@ -102,7 +102,7 @@ products.forEach(product => {
 
     button.addEventListener("click", () => {
     cart.push(product);
-    console.log(cart);
+    renderCart();
     });
 
 
