@@ -1,6 +1,6 @@
 console.log("JS is connected");
 
-let cart = [];
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 const products = [
     {
@@ -122,6 +122,11 @@ products.forEach(product => {
 
     productsContainer.appendChild(article);
 })
+
+function saveCart() {
+    localStorage.setItem("cart", JSON.stringify(cart));
+}
+
 
 function renderCart() {
     cartContainer.innerHTML = "";
