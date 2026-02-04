@@ -114,4 +114,13 @@ products.forEach(product => {
     productsContainer.appendChild(article);
 })
 
+function renderCart() {
+    cartContainer.innerHTML = ""; //avoids repetition
+
+    cart.forEach(item => {
+        const p = document.createElement("p");
+        p.textContent = item.name + " - KES " + item.price;
+        cartContainer.appendChild(p);
+    });
+}
 
