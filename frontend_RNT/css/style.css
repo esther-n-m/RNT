@@ -1,48 +1,84 @@
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
-  padding: 0;
-  background: #fafafa;
+  font-family: "Segoe UI", sans-serif;
+  background: #0f0f14;
+  color: #f5f5f5;
 }
 
 header {
-  background: #2b2b2b;
-  color: white;
-  padding: 20px;
   text-align: center;
+  padding: 40px 20px;
+  border-bottom: 1px solid #2a2a35;
+}
+
+header h1 {
+  letter-spacing: 2px;
+  font-weight: 300;
+}
+
+header p {
+  color: #c9a45c;
+}
+
+section {
+  padding: 30px;
 }
 
 .products {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  padding: 20px;
+  gap: 25px;
 }
 
 article {
-  background: white;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  background: #1a1a22;
+  padding: 25px;
+  border-radius: 12px;
+  border: 1px solid #2a2a35;
+}
+
+article h3 {
+  margin-top: 0;
+  font-weight: 400;
+}
+
+.description {
+  color: #bdbdbd;
+  line-height: 1.5;
+}
+
+.price {
+  color: #c9a45c;
+  font-size: 18px;
+  margin: 15px 0;
 }
 
 button {
-  background: #ff7a00;
-  color: white;
-  border: none;
+  background: transparent;
+  color: #c9a45c;
+  border: 1px solid #c9a45c;
   padding: 10px;
   width: 100%;
+  border-radius: 6px;
   cursor: pointer;
-  border-radius: 5px;
+  transition: 0.3s;
 }
 
 button:hover {
-  background: #e86b00;
+  background: #c9a45c;
+  color: #0f0f14;
 }
 
 #cart {
-  background: white;
+  margin-top: 30px;
+  background: #1a1a22;
   padding: 20px;
-  margin: 20px;
-  border-radius: 8px;
+  border-radius: 12px;
+  border: 1px solid #2a2a35;
+}
+
+#total {
+  margin-top: 15px;
+  color: #c9a45c;
+  font-size: 20px;
 }
