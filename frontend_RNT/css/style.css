@@ -100,3 +100,21 @@ article img {
   border-radius: 8px;
   margin-bottom: 15px;
 }
+
+.products img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+@media (max-width: 600px) {
+  .products img {
+    aspect-ratio: 1 / 1; /* square on phones */
+  }
+}
+
+.products article {
+  padding: 16px;
+  gap: 12px;
+}
