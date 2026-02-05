@@ -21,20 +21,20 @@ header p {
 }
 
 section {
-  padding: 30px;
+  padding: 80px 60px;
 }
 
 .products {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 25px;
+  gap: 60px;
 }
 
 article {
   background: #1a1a22;
   padding: 25px;
   border-radius: 12px;
-  border: 1px solid #2a2a35;
+  border: none;
 }
 
 article h3 {
