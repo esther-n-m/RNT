@@ -5,6 +5,7 @@ let cart = JSON.parse(localStorage.getItem("cart")) || [];
 const products = [
     {
         name: "Vanilla Scented Candle",
+        category: "candle",
         description: "A soft vanilla scent that creates a calm, cozy atmosphere for evenings, self-care moments and unwinding after a long day.",
         price: 1200,
         image: "images/Vanilla_Scented_Candle.png"
@@ -12,6 +13,7 @@ const products = [
 
     {
         name: "Citrus Scented Candle",
+        category: "candle",
         description: "A fresh citrus blend that energizes your space and helps you feel more focused and refreshed.",
         price:  1600,
         image: "images/Citrus_Scented_Candle.png"
@@ -19,6 +21,7 @@ const products = [
 
     {
         name: "Pine & Cinnamon Scented Candle",
+        category: "candle",
         description: "A warm, woody scent with a hint of spice, perfect for creating a cozy, comforting vibe on cold or rainy days.",
         price: 1900,
         image: "images/Pine_&_Cinnamon_Scented_Candle.png"
@@ -26,6 +29,7 @@ const products = [
 
     {
         name: "Coconut & Sandalwood Scented Candle",
+        category: "candle",
         description: "A rich, luxurious blend that makes your space feel premium, relaxing, and thoughtfully styled.",
         price: 2500,
         image:"images/Coconut_&_Sandalwood_Scented_Candle.png"
@@ -33,6 +37,7 @@ const products = [
 
     {
         name: "Lavender Scented Candle",
+        category: "candle",
         description: "A gentle lavender aroma designed to reduce stress and help you relax before bed.",
         price: 1300,
         image: "images/Lavender_Scented_Candle.png"
@@ -40,6 +45,7 @@ const products = [
 
     {
         name: "Soft Throw Pillows",
+        category: "pillow",
         description: "A simple, comfortable pillow that adds softness and warmth to your living room or bedroom.",
         price: 2000,
         image: "images/Soft_Throw_Pillow.png"
@@ -47,6 +53,7 @@ const products = [
 
     {
         name: "Knot Pillow",
+        category: "pillow",
         description: "A modern accent pillow that adds character and comfort to your space without overwhelming your design.",
         price: 2100,
         image: "images/Knot_Pillow.png"
@@ -54,6 +61,7 @@ const products = [
 
     {
         name: "Sausage Pillow",
+        category: "pillow",
         description: "A long, supportive cushion that combines comfort with a stylish, hotel-like feel.",
         price: 2200,
         image: "images/Sausage_Pillow.png"
@@ -61,6 +69,7 @@ const products = [
 
     {
         name: "Round Pillow",
+        category: "pillow",
         description: "A plush round pillow that adds a cozy, relaxed touch to sofas, chairs, and reading corners.",
         price: 2300,
         image: "images/Round_Pillow.png"
@@ -68,6 +77,7 @@ const products = [
 
     {
         name: "Fringe Pillow",
+        category: "pillow",
         description: "A decorative pillow with soft fringe details that brings texture and elegance to any room.",
         price: 2400,
         image: "images/Fringe_Pillow.png"
@@ -75,6 +85,7 @@ const products = [
 
     {
         name: "Geometric Pillow",
+        category: "pillow",
         description: "A modern patterned pillow that adds visual interest and a clean, contemporary look to your space.",
         price: 2500,
         image: "images/Geometric_Pillow.png"
@@ -95,8 +106,13 @@ if (!cartContainer) {
     console.error("Cart container not found");
 }
 
+//showing only candles on the home page
+const featuredProducts = products.filter(
+  product => product.category === "candle"
+);
 
-products.forEach(product => {
+
+featuredProducts.forEach(product => {
     const article = document.createElement("article");
 
     const img = document.createElement("img");
