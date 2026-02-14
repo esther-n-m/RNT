@@ -97,6 +97,7 @@ button:hover {
 .hero {
   text-align: center;
   padding: 80px 20px;
+  background: radial-gradient(circle at top, #1a1a22, #0f0f14);
 }
 
 .hero h2 {
