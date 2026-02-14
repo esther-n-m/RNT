@@ -118,3 +118,7 @@ article img {
   padding: 16px;
   gap: 12px;
 }
+
+.hero-product {
+  grid-column: span 2;
+}
