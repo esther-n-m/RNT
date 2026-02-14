@@ -111,8 +111,13 @@ const featuredProducts = products.filter(
   product => product.category === "candle"
 );
 
+const heroProduct = featuredProducts[0];
+const secondaryProducts = featuredProducts.slice(1, 4);
 
-featuredProducts.forEach(product => {
+if (featuredProducts.length === 0) return;
+
+[heroProduct, ...secondaryProducts].forEach((product, index) => {
+
     const article = document.createElement("article");
 
     const img = document.createElement("img");
@@ -143,6 +148,11 @@ featuredProducts.forEach(product => {
     saveCart();
     renderCart();
 });
+
+
+if (index === 0) {
+  article.classList.add("hero-product");
+}
 
 
     article.appendChild(img);
