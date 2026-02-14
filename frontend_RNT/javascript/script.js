@@ -106,15 +106,21 @@ if (!cartContainer) {
     console.error("Cart container not found");
 }
 
+
+function renderFeaturedProducts() {
+    
 //showing only candles on the home page
 const featuredProducts = products.filter(
   product => product.category === "candle"
 );
 
+if (featuredProducts.length === 0) {
+    console.warn("No featured products found");
+    return;
+  }
+
 const heroProduct = featuredProducts[0];
 const secondaryProducts = featuredProducts.slice(1, 4);
-
-if (featuredProducts.length === 0) return;
 
 [heroProduct, ...secondaryProducts].forEach((product, index) => {
 
@@ -149,7 +155,6 @@ if (featuredProducts.length === 0) return;
     renderCart();
 });
 
-
 if (index === 0) {
   article.classList.add("hero-product");
 }
@@ -162,7 +167,10 @@ if (index === 0) {
     article.appendChild(button);
 
     productsContainer.appendChild(article);
-})
+});
+
+}
+renderFeaturedProducts();
 
 function saveCart() {
     localStorage.setItem("cart", JSON.stringify(cart));
