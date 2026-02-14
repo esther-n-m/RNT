@@ -52,6 +52,8 @@ article h3 {
 .description {
   color: #bdbdbd;
   line-height: 1.5;
+  font-size: 14px;
+  opacity: 0.8;
 }
 
 .price {
