@@ -182,45 +182,48 @@ function renderCart() {
     let totalItems = 0;
 
     cart.forEach((item, index) => {
-        totalItems += item.quantity; // Count total units for the gold icon
+        totalItems += item.quantity;
         
         const div = document.createElement("div");
         div.className = "cart-item";
+        div.style.cssText = "display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #2a2a35;";
+
+        // Luxury Stepper: [ - 1 + ]
         div.innerHTML = `
-            <span>${item.name} (x${item.quantity})</span>
-            <span>KES ${ (item.price * item.quantity).toLocaleString() }</span>
+            <div style="text-align: left;">
+                <span style="display: block; font-family: 'Playfair Display'; font-size: 1.1rem;">${item.name}</span>
+                <span style="color: #c9a45c; font-size: 0.9rem;">KES ${(item.price * item.quantity).toLocaleString()}</span>
+            </div>
+            <div class="stepper" style="display: flex; align-items: center; gap: 15px;">
+                <button class="adjust-btn" onclick="updateQty(${index}, -1)">−</button>
+                <span style="font-size: 0.9rem; width: 20px; text-align: center;">${item.quantity}</span>
+                <button class="adjust-btn" onclick="updateQty(${index}, 1)">+</button>
+            </div>
         `;
 
-        const removeBtn = document.createElement("button");
-        removeBtn.textContent = "-"; // Luxury tip: Use minus/plus for quantity
-        removeBtn.style.padding = "2px 10px";
-        removeBtn.style.marginLeft = "10px";
-
-        removeBtn.addEventListener("click", () => {
-            if (item.quantity > 1) {
-                item.quantity -= 1; // Decrement quantity
-            } else {
-                cart.splice(index, 1); // Remove if last item
-            }
-            saveCart();
-            renderCart();
-        });
-
-        div.appendChild(removeBtn);
         cartContainer.appendChild(div);
     });
 
-    // Update the dynamic gold counter
+    // Update Top Shopping Bag
     const cartCountElement = document.getElementById("cart-count");
     if (cartCountElement) {
         cartCountElement.textContent = totalItems;
-        // Subtly hide the badge if cart is empty
         cartCountElement.style.opacity = totalItems > 0 ? "1" : "0";
     }
 
-    document.getElementById("total").textContent =
-        "Total: KES " + calculateTotal().toLocaleString();
+    document.getElementById("total").textContent = "Total: KES " + calculateTotal().toLocaleString();
 }
+
+// Global function to handle + and -
+window.updateQty = (index, change) => {
+    if (cart[index].quantity + change > 0) {
+        cart[index].quantity += change;
+    } else {
+        cart.splice(index, 1);
+    }
+    saveCart();
+    renderCart();
+};
 
 function calculateTotal() {
     return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
