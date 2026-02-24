@@ -111,15 +111,19 @@ function calculateTotal() {
 // Toggle Drawer Functions
 const openCart = () => {
     document.getElementById("cart-drawer").classList.add("active");
+    document.getElementById("cart-overlay").classList.add("active");
 };
 
 const closeCart = () => {
     document.getElementById("cart-drawer").classList.remove("active");
+    document.getElementById("cart-overlay").classList.remove("active");
 };
 
 // Listen for clicks on the Bag Icon and the X Close button
 document.getElementById("cart-icon-container").addEventListener("click", openCart);
 document.getElementById("close-cart").addEventListener("click", closeCart);
+// Add this so clicking the DARK AREA also closes the cart (very luxury!)
+document.getElementById("cart-overlay").addEventListener("click", closeCart);
 
 // AUTOMATION: Open the cart automatically when a user adds an item
 // Find your 'Add to Collection' logic and add openCart() inside the click listener
@@ -252,7 +256,17 @@ function renderCart() {
 
     const totalDisplay = document.getElementById("total");
     if (totalDisplay) {
-        totalDisplay.textContent = "Total: KES " + calculateTotal().toLocaleString();
+        totalDisplay.innerHTML = `
+            <div style="border-top: 1px solid rgba(201, 164, 92, 0.3); margin-top: 30px; padding-top: 20px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                    <span style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; color: rgba(255,255,255,0.6);">Subtotal</span>
+                    <span style="color: #c9a45c; font-weight: 600; font-size: 1.1rem;">KES ${calculateTotal().toLocaleString()}</span>
+                </div>
+                <button class="checkout-btn" style="width: 100%; background: #c9a45c; color: #0b0b0e; padding: 18px; border: none; text-transform: uppercase; letter-spacing: 3px; font-weight: bold; cursor: pointer; font-size: 0.75rem; transition: 0.3s;">
+                    Proceed to Checkout
+                </button>
+            </div>
+        `;
     }
 }
 

@@ -78,6 +78,30 @@ header p {
     right: -8px;
 }
 
+/* The Dark Overlay */
+#cart-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Deep dimming */
+    /* Safari Support */
+    -webkit-backdrop-filter: blur(3px); 
+    /* Standard Support */
+    backdrop-filter: blur(3px);
+    z-index: 999; /* Just below the drawer (1000) */
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.5s ease;
+}
+
+/* Show the overlay when the drawer is active */
+#cart-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
 section {
   padding: 80px 60px;
 }
