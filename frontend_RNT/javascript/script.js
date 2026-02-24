@@ -17,7 +17,7 @@ const products = [
         name: "Citrus Scented Candle",
         category: "candle",
         description: "A fresh citrus blend that energizes your space and helps you feel more focused and refreshed.",
-        price:  1600,
+        price: 1600,
         image: "images/Citrus_Scented_Candle.png"
     },
 
@@ -34,7 +34,7 @@ const products = [
         category: "candle",
         description: "A rich, luxurious blend that makes your space feel premium, relaxing, and thoughtfully styled.",
         price: 2500,
-        image:"images/Coconut_&_Sandalwood_Scented_Candle.png"
+        image: "images/Coconut_&_Sandalwood_Scented_Candle.png"
     },
 
     {
@@ -116,11 +116,18 @@ window.updateQty = (index, change) => {
     renderCart();
 };
 
+// NEW FUNCTION 
+window.removeItem = (index) => {
+    cart.splice(index, 1); // This removes the whole item line from the array
+    saveCart();            // Saves the change
+    renderCart();          // Re-draws the cart so the item disappears
+};
+
 window.filterBy = (category) => {
     renderCollection(category);
     document.querySelectorAll('.filter-link').forEach(link => {
         link.classList.remove('active');
-        if(link.innerText.toLowerCase().includes(category)) {
+        if (link.innerText.toLowerCase().includes(category)) {
             link.classList.add('active');
         }
     });
@@ -157,9 +164,8 @@ function renderCollection(category) {
 }
 
 function renderCart() {
-    // Check if elements exist to avoid errors
-    if (!cartContainer) return; 
-    
+    if (!cartContainer) return;
+
     cartContainer.innerHTML = "";
     let totalItems = 0;
 
@@ -170,27 +176,29 @@ function renderCart() {
         div.style.cssText = "display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.05);";
 
         div.innerHTML = `
-            <div style="text-align: left;">
-                <span style="display: block; font-family: 'Playfair Display'; font-size: 1rem; letter-spacing: 1px;">${item.name}</span>
-                <span style="color: #c9a45c; font-size: 0.85rem;">KES ${(item.price * item.quantity).toLocaleString()}</span>
-            </div>
-            <div class="stepper" style="display: flex; align-items: center; gap: 15px;">
-                <button class="adjust-btn" onclick="updateQty(${index}, -1)">−</button>
-                <span style="font-size: 0.9rem; min-width: 20px; text-align: center;">${item.quantity}</span>
-                <button class="adjust-btn" onclick="updateQty(${index}, 1)">+</button>
-            </div>
-        `;
+    <div style="text-align: left;">
+        <span style="display: block; font-family: 'Playfair Display'; font-size: 1rem; letter-spacing: 1px;">${item.name}</span>
+        <div style="display: flex; align-items: center; gap: 15px; margin-top: 5px;">
+            <span style="color: #c9a45c; font-size: 0.85rem;">KES ${(item.price * item.quantity).toLocaleString()}</span>
+            
+            <span class="remove-link" onclick="removeItem(${index})">Remove</span>
+        </div>
+    </div>
+    <div class="stepper" style="display: flex; align-items: center; gap: 15px;">
+        <button class="adjust-btn" onclick="updateQty(${index}, -1)">−</button>
+        <span style="font-size: 0.9rem; min-width: 20px; text-align: center;">${item.quantity}</span>
+        <button class="adjust-btn" onclick="updateQty(${index}, 1)">+</button>
+    </div>
+`;
         cartContainer.appendChild(div);
     });
 
-    // Update Top Bag Badge
     const cartCountElement = document.getElementById("cart-count");
     if (cartCountElement) {
         cartCountElement.textContent = totalItems;
         cartCountElement.style.opacity = totalItems > 0 ? "1" : "0";
     }
 
-    // Update Bottom Total
     const totalDisplay = document.getElementById("total");
     if (totalDisplay) {
         totalDisplay.textContent = "Total: KES " + calculateTotal().toLocaleString();

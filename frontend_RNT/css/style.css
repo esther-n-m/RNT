@@ -317,3 +317,18 @@ p {
     height: 1px;
     background: #c9a45c;
 }
+
+.remove-link {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: 0.3s;
+    border-bottom: 1px solid transparent;
+}
+
+.remove-link:hover {
+    color: #ff4d4d; /* A soft red alert color */
+    border-bottom: 1px solid #ff4d4d;
+}
