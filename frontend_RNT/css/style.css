@@ -278,3 +278,42 @@ p {
     color: #0f0f14;
     border-color: #c9a45c;
 }
+
+.filter-nav {
+    text-align: center;
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+
+.filter-link {
+    font-family: "Playfair Display", serif;
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: rgba(245, 245, 245, 0.5); /* Faded when not active */
+    transition: all 0.4s ease;
+    position: relative;
+    padding-bottom: 8px;
+}
+
+.filter-link:hover {
+    color: #c9a45c;
+}
+
+/* The gold underline for the active category */
+.filter-link.active {
+    color: #c9a45c;
+}
+
+.filter-link.active::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 25%;
+    width: 50%;
+    height: 1px;
+    background: #c9a45c;
+}

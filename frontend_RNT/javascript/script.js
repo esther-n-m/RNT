@@ -107,69 +107,59 @@ if (!cartContainer) {
 }
 
 
-function renderFeaturedProducts() {
-    
-//showing only candles on the home page
-const featuredProducts = products.filter(
-  product => product.category === "candle"
-);
+function renderCollection(category) {
+    // 1. Clear the container so we don't just keep appending
+    productsContainer.innerHTML = "";
 
-if (featuredProducts.length === 0) {
-    console.warn("No featured products found");
-    return;
-  }
+    // 2. Filter products based on the choice (candle or pillow)
+    const filtered = products.filter(product => product.category === category);
 
-const heroProduct = featuredProducts[0];
-const secondaryProducts = featuredProducts.slice(1, 4);
+    // 3. Loop through the filtered list
+    filtered.forEach((product) => {
+        const article = document.createElement("article");
+        
+        // Add a class for styling
+        article.className = "product-card";
 
-[heroProduct, ...secondaryProducts].forEach((product, index) => {
+        article.innerHTML = `
+            <img src="${product.image}" alt="${product.name}">
+            <h3>${product.name}</h3>
+            <p class="description">${product.description}</p>
+            <p class="price">KES ${product.price.toLocaleString()}</p>
+            <button class="add-btn">Add to Collection</button>
+        `;
 
-    const article = document.createElement("article");
+        // 4. Add the Click Event to the button inside this article
+        article.querySelector(".add-btn").addEventListener("click", () => {
+            const existing = cart.find(item => item.name === product.name);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            saveCart();
+            renderCart();
+        });
 
-    const img = document.createElement("img");
-    img.src = product.image;
-
-    
-    const h3 = document.createElement("h3");
-    h3.textContent= product.name;
-
-    const description = document.createElement("p");
-    description.textContent = product.description;
-
-    const price = document.createElement("p");
-    price.textContent = "KES" + product.price;
-
-    const button = document.createElement("button");
-    button.textContent = "Add to Cart";
-
-    button.addEventListener("click", () => {
-    const existing = cart.find(item => item.name === product.name);
-
-    if (existing) {
-        existing.quantity += 1;
-    } else {
-        cart.push({...product, quantity: 1});
-    }
-
-    saveCart();
-    renderCart();
-});
-
-if (index === 0) {
-  article.classList.add("hero-product");
+        productsContainer.appendChild(article);
+    });
 }
 
+// 5. Make the filter function available to the HTML buttons
+window.filterBy = (category) => {
+    renderCollection(category);
+    
+    // Luxury Touch: Update the active state of the buttons
+    document.querySelectorAll('.filter-link').forEach(link => {
+        link.classList.remove('active');
+        if(link.innerText.toLowerCase().includes(category)) {
+            link.classList.add('active');
+        }
+    });
+};
 
-    article.appendChild(img);
-    article.appendChild(h3);
-    article.appendChild(description);
-    article.appendChild(price);
-    article.appendChild(button);
-
-    productsContainer.appendChild(article);
-});
-
-}
+// 6. Initial Load: Show candles by default
+renderCollection('candle');
 renderFeaturedProducts();
 
 function saveCart() {
