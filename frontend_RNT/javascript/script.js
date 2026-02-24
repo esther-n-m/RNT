@@ -179,19 +179,29 @@ function saveCart() {
 
 function renderCart() {
     cartContainer.innerHTML = "";
+    let totalItems = 0;
 
     cart.forEach((item, index) => {
+        totalItems += item.quantity; // Count total units for the gold icon
+        
         const div = document.createElement("div");
-
-        div.textContent =
-        item.name + " x" + item.quantity + " - KES " + (item.price * item.quantity);
-
+        div.className = "cart-item";
+        div.innerHTML = `
+            <span>${item.name} (x${item.quantity})</span>
+            <span>KES ${ (item.price * item.quantity).toLocaleString() }</span>
+        `;
 
         const removeBtn = document.createElement("button");
-        removeBtn.textContent = "Remove";
+        removeBtn.textContent = "-"; // Luxury tip: Use minus/plus for quantity
+        removeBtn.style.padding = "2px 10px";
+        removeBtn.style.marginLeft = "10px";
 
         removeBtn.addEventListener("click", () => {
-            cart.splice(index, 1);
+            if (item.quantity > 1) {
+                item.quantity -= 1; // Decrement quantity
+            } else {
+                cart.splice(index, 1); // Remove if last item
+            }
             saveCart();
             renderCart();
         });
@@ -200,19 +210,20 @@ function renderCart() {
         cartContainer.appendChild(div);
     });
 
+    // Update the dynamic gold counter
+    const cartCountElement = document.getElementById("cart-count");
+    if (cartCountElement) {
+        cartCountElement.textContent = totalItems;
+        // Subtly hide the badge if cart is empty
+        cartCountElement.style.opacity = totalItems > 0 ? "1" : "0";
+    }
+
     document.getElementById("total").textContent =
-        "Total: KES " + calculateTotal();
+        "Total: KES " + calculateTotal().toLocaleString();
 }
 
-
 function calculateTotal() {
-    let total = 0;
-
-    cart.forEach(item => {
-        total += item.price * item.quantity;
-    });
-
-    return total;
+    return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 }
 
 renderCart();

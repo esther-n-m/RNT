@@ -34,6 +34,50 @@ header p {
   letter-spacing: 2px;
 }
 
+.nav-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+#cart-icon-container {
+    position: absolute;
+    right: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.bag-icon {
+    width: 28px;
+    height: 28px;
+    transition: transform 0.3s ease;
+}
+
+#cart-icon-container:hover .bag-icon {
+    transform: translateY(-2px);
+}
+
+#cart-count {
+    background: #c9a45c;
+    color: #0f0f14;
+    font-size: 10px;
+    font-weight: bold;
+    font-family: sans-serif;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: -5px;
+    right: -8px;
+}
+
 section {
   padding: 80px 60px;
 }
