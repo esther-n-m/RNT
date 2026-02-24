@@ -255,3 +255,26 @@ p {
   font-weight: 600;
   color: #d4af37;
 }
+
+.adjust-btn {
+    background: transparent;
+    border: 1px solid rgba(201, 164, 92, 0.4);
+    color: #c9a45c;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%; /* Circle buttons look more bespoke */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s;
+    padding: 0;
+    margin: 0;
+}
+
+.adjust-btn:hover {
+    background: #c9a45c;
+    color: #0f0f14;
+    border-color: #c9a45c;
+}
