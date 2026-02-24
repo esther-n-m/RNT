@@ -332,3 +332,17 @@ p {
     color: #ff4d4d; /* A soft red alert color */
     border-bottom: 1px solid #ff4d4d;
 }
+
+.checkout-btn {
+    font-weight: 600;
+    letter-spacing: 4px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.checkout-btn:hover {
+    background: #e5c17e !important; /* Lighter gold on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}

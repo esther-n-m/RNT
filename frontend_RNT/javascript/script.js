@@ -3,6 +3,7 @@ console.log("JS is connected");
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 const productsContainer = document.getElementById("products");
 const cartContainer = document.getElementById("cart");
+let currentCategory = 'candle'; //  track what the user is looking at
 
 const products = [
     {
@@ -124,9 +125,15 @@ window.removeItem = (index) => {
 };
 
 window.filterBy = (category) => {
+    //  Update the tracking variable immediately
+    currentCategory = category;
+    //  Refresh the product list
     renderCollection(category);
+    //   Refresh the cart so the empty button text updates
+    renderCart();
     document.querySelectorAll('.filter-link').forEach(link => {
         link.classList.remove('active');
+        // Match the text to make sure the right link glows gold
         if (link.innerText.toLowerCase().includes(category)) {
             link.classList.add('active');
         }
@@ -168,6 +175,30 @@ function renderCart() {
 
     cartContainer.innerHTML = "";
     let totalItems = 0;
+
+
+    // 1. Check if the cart is empty
+    if (cart.length === 0) {
+        // Set the specific label based on current category
+        const label = currentCategory === 'candle' ? 'The Candle Atelier' : 'The Pillow Collection';
+
+        cartContainer.innerHTML = `
+            <div style="text-align: center; padding: 40px 0;">
+                <p style="font-family: 'Playfair Display'; font-style: italic; color: rgba(255,255,255,0.4);">
+                    Your collection is currently empty.
+                </p>
+                <button onclick="window.filterBy('${currentCategory}'); document.getElementById('products').scrollIntoView({behavior: 'smooth'})" 
+                        style="margin-top: 20px; font-size: 10px;">
+                    Explore ${label}
+                </button>
+            </div>
+        `;
+        document.getElementById("total").style.display = "none";
+        return;
+    }
+
+    // 2. If not empty, show items (Your existing loop)
+    document.getElementById("total").style.display = "block";
 
     cart.forEach((item, index) => {
         totalItems += item.quantity;
