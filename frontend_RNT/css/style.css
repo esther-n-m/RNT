@@ -163,6 +163,8 @@ button:hover {
   transition: 0.5s;
   padding: 40px;
   z-index: 1000;
+  /* ADD FOR DRAWER SCROLLS */
+  overflow-y: auto;
 }
 
 #cart-drawer.active {
@@ -345,4 +347,9 @@ p {
     background: #e5c17e !important; /* Lighter gold on hover */
     transform: translateY(-2px);
     box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+#close-cart:hover {
+    transform: rotate(90deg); /* Modern, playful touch */
+    color: #e5c17e; /* Glows brighter gold */
 }

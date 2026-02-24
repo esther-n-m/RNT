@@ -107,6 +107,24 @@ function calculateTotal() {
 }
 
 // 3. THE "BRIDGE" FUNCTIONS (Making JS talk to HTML)
+
+// Toggle Drawer Functions
+const openCart = () => {
+    document.getElementById("cart-drawer").classList.add("active");
+};
+
+const closeCart = () => {
+    document.getElementById("cart-drawer").classList.remove("active");
+};
+
+// Listen for clicks on the Bag Icon and the X Close button
+document.getElementById("cart-icon-container").addEventListener("click", openCart);
+document.getElementById("close-cart").addEventListener("click", closeCart);
+
+// AUTOMATION: Open the cart automatically when a user adds an item
+// Find your 'Add to Collection' logic and add openCart() inside the click listener
+
+
 window.updateQty = (index, change) => {
     if (cart[index].quantity + change > 0) {
         cart[index].quantity += change;
@@ -165,8 +183,10 @@ function renderCollection(category) {
             }
             saveCart();
             renderCart();
+            openCart(); // This opens the drawer ONLY when a button is clicked
         });
         productsContainer.appendChild(article);
+
     });
 }
 
@@ -239,3 +259,4 @@ function renderCart() {
 // 5. INITIALIZATION (Kickstart the site)
 renderCollection('candle');
 renderCart(); // Call this so the cart loads items from LocalStorage on refresh
+
