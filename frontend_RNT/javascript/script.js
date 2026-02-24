@@ -1,6 +1,8 @@
 console.log("JS is connected");
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
+const productsContainer = document.getElementById("products");
+const cartContainer = document.getElementById("cart");
 
 const products = [
     {
@@ -93,118 +95,17 @@ const products = [
 
 ];
 
-const productsContainer = document.getElementById("products");
 
-if (!productsContainer) {
-  console.error("Products container not found");
-}
-
-
-const cartContainer = document.getElementById("cart");
-
-if (!cartContainer) {
-    console.error("Cart container not found");
-}
-
-
-function renderCollection(category) {
-    // 1. Clear the container so we don't just keep appending
-    productsContainer.innerHTML = "";
-
-    // 2. Filter products based on the choice (candle or pillow)
-    const filtered = products.filter(product => product.category === category);
-
-    // 3. Loop through the filtered list
-    filtered.forEach((product) => {
-        const article = document.createElement("article");
-        
-        // Add a class for styling
-        article.className = "product-card";
-
-        article.innerHTML = `
-            <img src="${product.image}" alt="${product.name}">
-            <h3>${product.name}</h3>
-            <p class="description">${product.description}</p>
-            <p class="price">KES ${product.price.toLocaleString()}</p>
-            <button class="add-btn">Add to Collection</button>
-        `;
-
-        // 4. Add the Click Event to the button inside this article
-        article.querySelector(".add-btn").addEventListener("click", () => {
-            const existing = cart.find(item => item.name === product.name);
-            if (existing) {
-                existing.quantity += 1;
-            } else {
-                cart.push({ ...product, quantity: 1 });
-            }
-            saveCart();
-            renderCart();
-        });
-
-        productsContainer.appendChild(article);
-    });
-}
-
-// 5. Make the filter function available to the HTML buttons
-window.filterBy = (category) => {
-    renderCollection(category);
-    
-    // Luxury Touch: Update the active state of the buttons
-    document.querySelectorAll('.filter-link').forEach(link => {
-        link.classList.remove('active');
-        if(link.innerText.toLowerCase().includes(category)) {
-            link.classList.add('active');
-        }
-    });
-};
-
-// 6. Initial Load: Show candles by default
-renderCollection('candle');
-renderFeaturedProducts();
-
+// 2. CORE LOGIC (Saving and Calculating)
 function saveCart() {
     localStorage.setItem("cart", JSON.stringify(cart));
 }
 
-
-function renderCart() {
-    cartContainer.innerHTML = "";
-    let totalItems = 0;
-
-    cart.forEach((item, index) => {
-        totalItems += item.quantity;
-        
-        const div = document.createElement("div");
-        div.className = "cart-item";
-        div.style.cssText = "display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #2a2a35;";
-
-        // Luxury Stepper: [ - 1 + ]
-        div.innerHTML = `
-            <div style="text-align: left;">
-                <span style="display: block; font-family: 'Playfair Display'; font-size: 1.1rem;">${item.name}</span>
-                <span style="color: #c9a45c; font-size: 0.9rem;">KES ${(item.price * item.quantity).toLocaleString()}</span>
-            </div>
-            <div class="stepper" style="display: flex; align-items: center; gap: 15px;">
-                <button class="adjust-btn" onclick="updateQty(${index}, -1)">−</button>
-                <span style="font-size: 0.9rem; width: 20px; text-align: center;">${item.quantity}</span>
-                <button class="adjust-btn" onclick="updateQty(${index}, 1)">+</button>
-            </div>
-        `;
-
-        cartContainer.appendChild(div);
-    });
-
-    // Update Top Shopping Bag
-    const cartCountElement = document.getElementById("cart-count");
-    if (cartCountElement) {
-        cartCountElement.textContent = totalItems;
-        cartCountElement.style.opacity = totalItems > 0 ? "1" : "0";
-    }
-
-    document.getElementById("total").textContent = "Total: KES " + calculateTotal().toLocaleString();
+function calculateTotal() {
+    return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 }
 
-// Global function to handle + and -
+// 3. THE "BRIDGE" FUNCTIONS (Making JS talk to HTML)
 window.updateQty = (index, change) => {
     if (cart[index].quantity + change > 0) {
         cart[index].quantity += change;
@@ -215,8 +116,87 @@ window.updateQty = (index, change) => {
     renderCart();
 };
 
-function calculateTotal() {
-    return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+window.filterBy = (category) => {
+    renderCollection(category);
+    document.querySelectorAll('.filter-link').forEach(link => {
+        link.classList.remove('active');
+        if(link.innerText.toLowerCase().includes(category)) {
+            link.classList.add('active');
+        }
+    });
+};
+
+// 4. RENDERING FUNCTIONS (The "Expert" versions)
+function renderCollection(category) {
+    productsContainer.innerHTML = "";
+    const filtered = products.filter(product => product.category === category);
+
+    filtered.forEach((product) => {
+        const article = document.createElement("article");
+        article.className = "product-card";
+        article.innerHTML = `
+            <img src="${product.image}" alt="${product.name}">
+            <h3>${product.name}</h3>
+            <p class="description">${product.description}</p>
+            <p class="price">KES ${product.price.toLocaleString()}</p>
+            <button class="add-btn">Add to Collection</button>
+        `;
+
+        article.querySelector(".add-btn").addEventListener("click", () => {
+            const existing = cart.find(item => item.name === product.name);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            saveCart();
+            renderCart();
+        });
+        productsContainer.appendChild(article);
+    });
 }
 
-renderCart();
+function renderCart() {
+    // Check if elements exist to avoid errors
+    if (!cartContainer) return; 
+    
+    cartContainer.innerHTML = "";
+    let totalItems = 0;
+
+    cart.forEach((item, index) => {
+        totalItems += item.quantity;
+        const div = document.createElement("div");
+        div.className = "cart-item";
+        div.style.cssText = "display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.05);";
+
+        div.innerHTML = `
+            <div style="text-align: left;">
+                <span style="display: block; font-family: 'Playfair Display'; font-size: 1rem; letter-spacing: 1px;">${item.name}</span>
+                <span style="color: #c9a45c; font-size: 0.85rem;">KES ${(item.price * item.quantity).toLocaleString()}</span>
+            </div>
+            <div class="stepper" style="display: flex; align-items: center; gap: 15px;">
+                <button class="adjust-btn" onclick="updateQty(${index}, -1)">−</button>
+                <span style="font-size: 0.9rem; min-width: 20px; text-align: center;">${item.quantity}</span>
+                <button class="adjust-btn" onclick="updateQty(${index}, 1)">+</button>
+            </div>
+        `;
+        cartContainer.appendChild(div);
+    });
+
+    // Update Top Bag Badge
+    const cartCountElement = document.getElementById("cart-count");
+    if (cartCountElement) {
+        cartCountElement.textContent = totalItems;
+        cartCountElement.style.opacity = totalItems > 0 ? "1" : "0";
+    }
+
+    // Update Bottom Total
+    const totalDisplay = document.getElementById("total");
+    if (totalDisplay) {
+        totalDisplay.textContent = "Total: KES " + calculateTotal().toLocaleString();
+    }
+}
+
+// 5. INITIALIZATION (Kickstart the site)
+renderCollection('candle');
+renderCart(); // Call this so the cart loads items from LocalStorage on refresh
