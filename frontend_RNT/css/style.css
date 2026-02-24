@@ -1,14 +1,25 @@
+/* Add a clean Sans-Serif for body text */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap');
+
 body {
   margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  background: #0b0b0e;
+  color: #e0e0e0;
+  line-height: 1.6;
+}
+
+h1, h2, h3 {
   font-family: "Playfair Display", serif;
-  background: #0f0f14;
-  color: #f5f5f5;
+  letter-spacing: 4px; /* More breathing room */
+  text-transform: uppercase;
+  font-weight: 300;
 }
 
 header {
-  text-align: center;
-  padding: 40px 20px;
-  border-bottom: 1px solid #2a2a35;
+  padding: 60px 20px;
+  background: transparent;
+  border-bottom: 1px solid rgba(201, 164, 92, 0.2);
 }
 
 header h1 {
@@ -18,6 +29,9 @@ header h1 {
 
 header p {
   color: #c9a45c;
+  font-style: italic;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
 }
 
 section {
@@ -26,17 +40,21 @@ section {
 
 .products {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: 40px;
-  padding: 40px;
+  grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); /*made the products smaller and aside each other*/
+  gap: 60px;
+  padding: 80px 10%;;
 }
 
 article {
-  background: #1a1a22;
-  padding: 25px;
-  border-radius: 12px;
-  border: none;
-  transition: transform 0.3s, box-shadow 0.3s;
+  background: transparent; /* Remove the boxy background */
+  padding: 0px;
+  border-radius: 0px;
+  text-align: center;
+}
+
+article:hover img {
+  transform: scale(1.02);
+  filter: brightness(1.1);
 }
 
 article:hover {
@@ -67,18 +85,18 @@ button {
   background: transparent;
   color: #c9a45c;
   border: 1px solid #c9a45c;
-  padding: 8px 14px;
-  width: auto;
-  font-size: 14px;
-  letter-spacing: 1px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.3s;
+  padding: 12px 30px;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 2px;
+  transition: 0.4s ease;
+  margin-top: 15px;
 }
 
 button:hover {
   background: #c9a45c;
-  color: #0f0f14;
+  color: #0b0b0e;
+  letter-spacing: 3px; /* Subtle expansion on hover */
 }
 
 #cart {
@@ -87,6 +105,24 @@ button:hover {
   padding: 20px;
   border-radius: 12px;
   border: 1px solid #2a2a35;
+}
+
+/* The Cart as a "Concierge Drawer" */
+#cart-drawer {
+  position: fixed;
+  right: -400px;
+  top: 0;
+  width: 350px;
+  height: 100%;
+  background: #16161d;
+  box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+  transition: 0.5s;
+  padding: 40px;
+  z-index: 1000;
+}
+
+#cart-drawer.active {
+  right: 0;
 }
 
 #total {
@@ -101,15 +137,18 @@ button:hover {
   background: radial-gradient(circle at top, #1a1a22, #0f0f14);
 }
 
+/*
 .hero h2 {
   font-size: 36px;
   font-weight: 300;
-}
+}*/
 
 article img {
   width: 100%;
-  border-radius: 8px;
-  margin-bottom: 15px;
+  aspect-ratio: 4 / 5; /* Elegant vertical ratio */
+  object-fit: cover;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 0; /* Sharp corners or very slight (2px) feel more premium */
 }
 
 .products img {
@@ -155,11 +194,12 @@ article img {
   }
 }
 
+/*
 h3 {
   font-size: 1.2rem;
   font-weight: 500;
   color: #f5f5f5;
-}
+}*/
 
 p {
   font-size: 0.9rem;
