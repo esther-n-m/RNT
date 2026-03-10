@@ -262,7 +262,9 @@ function renderCart() {
                     <span style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; color: rgba(255,255,255,0.6);">Subtotal</span>
                     <span style="color: #c9a45c; font-weight: 600; font-size: 1.1rem;">KES ${calculateTotal().toLocaleString()}</span>
                 </div>
-                <button class="checkout-btn" style="width: 100%; background: #c9a45c; color: #0b0b0e; padding: 18px; border: none; text-transform: uppercase; letter-spacing: 3px; font-weight: bold; cursor: pointer; font-size: 0.75rem; transition: 0.3s;">
+                <button class="checkout-btn" 
+                        onclick="window.open('checkout.html', '_blank')" 
+                        style="width: 100%; background: #c9a45c; color: #0b0b0e; padding: 18px; border: none; text-transform: uppercase; letter-spacing: 3px; font-weight: bold; cursor: pointer; font-size: 0.75rem; transition: 0.3s;">
                     Proceed to Checkout
                 </button>
             </div>

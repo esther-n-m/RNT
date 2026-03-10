@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | The Atelier</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Specific styles for checkout layout */
+        .checkout-container {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 50px;
+            max-width: 1200px;
+            margin: 100px auto;
+            padding: 0 20px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 15px;
+            background: #16161d;
+            border: 1px solid rgba(201, 164, 92, 0.2);
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .summary-box {
+            background: #16161d;
+            padding: 30px;
+            border-radius: 4px;
+            height: fit-content;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="checkout-container">
+        <section>
+            <h1 style="font-family: 'Playfair Display'; margin-bottom: 40px;">Delivery Details</h1>
+            <form id="checkout-form">
+                <div style="display: flex; gap: 20px;">
+                    <input type="text" placeholder="First Name" required>
+                    <input type="text" placeholder="Last Name" required>
+                </div>
+                <input type="email" placeholder="Email Address" required>
+                <input type="text" placeholder="Phone (For M-Pesa)" required>
+                <input type="text" placeholder="Apartment/House No." required>
+                <label for="neighborhood-select"
+                    style="display: block; margin-bottom: 8px; font-size: 0.8rem; color: #c9a45c; text-transform: uppercase;">
+                    Select Your Neighborhood
+                </label>
+                <select id="neighborhood-select" name="neighborhood" required title="Please select a delivery neighborhood">
+                    <option value="">Select Neighborhood (Nairobi)</option>
+                    <option value="kilimani">Kilimani</option>
+                    <option value="kileleshwa">Kileleshwa</option>
+                    <option value="westlands">Westlands</option>
+                    <option value="karen">Karen</option>
+                </select>
+
+                <h2 style="font-family: 'Playfair Display'; margin: 40px 0 20px;">Payment Method</h2>
+                <div style="padding: 20px; border: 1px solid #c9a45c; margin-bottom: 20px;">
+                    <input type="radio" name="payment" id="mpesa" checked style="width: auto;">
+                    <label for="mpesa">M-Pesa Express</label>
+                </div>
+                <button type="submit" class="checkout-btn"
+                    style="width: 100%; background: #c9a45c; color: #0b0b0e; padding: 20px; border: none; font-weight: bold; letter-spacing: 2px; cursor: pointer;">
+                    CONFIRM & PAY NOW
+                </button>
+            </form>
+        </section>
+
+        <aside class="summary-box">
+            <h2 style="font-size: 1.2rem; margin-bottom: 30px;">Order Summary</h2>
+            <div id="checkout-items">
+            </div>
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); margin-top: 20px; padding-top: 20px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span>Subtotal</span>
+                    <span id="checkout-subtotal">KES 0</span>
+                </div>
+                <div
+                    style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.2rem; color: #c9a45c;">
+                    <span>Total</span>
+                    <span id="checkout-total">KES 0</span>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script src="javascript/checkout.js" defer></script>
+</body>
+
+</html>
