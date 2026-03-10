@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Access | The Atelier</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .auth-wrapper {
+            max-width: 450px;
+            margin: 100px auto;
+            padding: 40px;
+            background: #16161d;
+            border: 1px solid rgba(201, 164, 92, 0.2);
+            text-align: center;
+        }
+        .tab-group {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .tab {
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.5);
+            transition: 0.3s;
+        }
+        .tab.active {
+            color: #c9a45c;
+            border-bottom: 1px solid #c9a45c;
+            padding-bottom: 5px;
+        }
+        .auth-form { display: none; }
+        .auth-form.active { display: block; }
+        
+        input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+        }
+        .forgot-link {
+            display: block;
+            margin: 15px 0;
+            font-size: 0.7rem;
+            color: #c9a45c;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-wrapper">
+        <div class="tab-group">
+            <span class="tab active" id="login-tab" onclick="switchTab('login')">Sign In</span>
+            <span class="tab" id="register-tab" onclick="switchTab('register')">Create Account</span>
+        </div>
+
+        <form id="login-form" class="auth-form active">
+            <input type="email" placeholder="Email Address" required>
+            <input type="password" placeholder="Password" required>
+            <a href="#" class="forgot-link">Forgot Password?</a>
+            <button type="submit" class="checkout-btn" style="width: 100%; background: #c9a45c; color: #0b0b0e; padding: 18px; border: none; font-weight: bold; cursor: pointer;">LOGIN</button>
+        </form>
+
+        <form id="register-form" class="auth-form">
+            <input type="text" placeholder="Full Name" required>
+            <input type="email" placeholder="Email Address" required>
+            <input type="password" placeholder="Create Password" required>
+            <button type="submit" class="checkout-btn" style="width: 100%; background: #c9a45c; color: #0b0b0e; padding: 18px; border: none; font-weight: bold; cursor: pointer;">CREATE ACCOUNT</button>
+        </form>
+    </div>
+
+    <script src="javascript/auth.js" defer></script>
+</body>
+</html>
