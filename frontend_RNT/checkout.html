@@ -38,39 +38,46 @@
 
 <body>
     <div class="checkout-container">
-        <section>
-            <h1 style="font-family: 'Playfair Display'; margin-bottom: 40px;">Delivery Details</h1>
-            <form id="checkout-form">
-                <div style="display: flex; gap: 20px;">
-                    <input type="text" placeholder="First Name" required>
-                    <input type="text" placeholder="Last Name" required>
-                </div>
-                <input type="email" placeholder="Email Address" required>
-                <input type="text" placeholder="Phone (For M-Pesa)" required>
-                <input type="text" placeholder="Apartment/House No." required>
-                <label for="neighborhood-select"
-                    style="display: block; margin-bottom: 8px; font-size: 0.8rem; color: #c9a45c; text-transform: uppercase;">
-                    Select Your Neighborhood
-                </label>
-                <select id="neighborhood-select" name="neighborhood" required title="Please select a delivery neighborhood">
-                    <option value="">Select Neighborhood (Nairobi)</option>
-                    <option value="kilimani">Kilimani</option>
-                    <option value="kileleshwa">Kileleshwa</option>
-                    <option value="westlands">Westlands</option>
-                    <option value="karen">Karen</option>
-                </select>
+       <section>
+    <p style="text-align: center; font-size: 0.8rem; color: rgba(255,255,255,0.6); margin-bottom: 30px;">
+        Already a member? <a href="auth.html" style="color: #c9a45c;" target="_blank" rel="noopener"> Sign in  </a> to speed up your order.
+    </p>
 
-                <h2 style="font-family: 'Playfair Display'; margin: 40px 0 20px;">Payment Method</h2>
-                <div style="padding: 20px; border: 1px solid #c9a45c; margin-bottom: 20px;">
-                    <input type="radio" name="payment" id="mpesa" checked style="width: auto;">
-                    <label for="mpesa">M-Pesa Express</label>
-                </div>
-                <button type="submit" class="checkout-btn"
-                    style="width: 100%; background: #c9a45c; color: #0b0b0e; padding: 20px; border: none; font-weight: bold; letter-spacing: 2px; cursor: pointer;">
-                    CONFIRM & PAY NOW
-                </button>
-            </form>
-        </section>
+    <h1 style="font-family: 'Playfair Display'; margin-bottom: 40px;">Delivery Details</h1>
+
+    <form id="checkout-form">
+        <div style="display: flex; gap: 20px;">
+            <input type="text" placeholder="First Name" required>
+            <input type="text" placeholder="Last Name" required>
+        </div>
+        <input type="email" placeholder="Email Address" required>
+        <input type="text" placeholder="Phone (For M-Pesa)" required>
+        <input type="text" placeholder="Apartment/House No." required>
+        
+        <label for="neighborhood-select"
+            style="display: block; margin-bottom: 8px; font-size: 0.8rem; color: #c9a45c; text-transform: uppercase;">
+            Select Your Neighborhood
+        </label>
+        <select id="neighborhood-select" name="neighborhood" required title="Please select a delivery neighborhood">
+            <option value="">Select Neighborhood (Nairobi)</option>
+            <option value="kilimani">Kilimani</option>
+            <option value="kileleshwa">Kileleshwa</option>
+            <option value="westlands">Westlands</option>
+            <option value="karen">Karen</option>
+        </select>
+
+        <h2 style="font-family: 'Playfair Display'; margin: 40px 0 20px;">Payment Method</h2>
+        <div style="padding: 20px; border: 1px solid #c9a45c; margin-bottom: 20px;">
+            <input type="radio" name="payment" id="mpesa" checked style="width: auto;">
+            <label for="mpesa">M-Pesa Express</label>
+        </div>
+        
+        <button type="submit" class="checkout-btn"
+            style="width: 100%; background: #c9a45c; color: #0b0b0e; padding: 20px; border: none; font-weight: bold; letter-spacing: 2px; cursor: pointer;">
+            CONFIRM & PAY NOW
+        </button>
+    </form>
+</section>
 
         <aside class="summary-box">
             <h2 style="font-size: 1.2rem; margin-bottom: 30px;">Order Summary</h2>

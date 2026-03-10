@@ -36,16 +36,21 @@ header p {
 
 .nav-container {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    position: relative;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
+    width: 100%;
+}
+
+.nav-icons {
+    display: flex;
+    align-items: center;
+    gap: 30px; /* Consistent spacing between Login and Bag */
 }
 
 #cart-icon-container {
-    position: absolute;
-    right: 20px;
+    position: relative;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -56,6 +61,22 @@ header p {
     height: 28px;
     transition: transform 0.3s ease;
 }
+
+.auth-link {
+    text-decoration: none;
+    color: #c9a45c;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: 0.3s ease;
+}
+
+.auth-link:hover {
+    color: #ffffff !important;
+    text-shadow: 0 0 8px rgba(201, 164, 92, 0.6);
+    transition: 0.3s ease;
+}
+
 
 #cart-icon-container:hover .bag-icon {
     transform: translateY(-2px);
@@ -100,6 +121,10 @@ header p {
 #cart-overlay.active {
     opacity: 1;
     visibility: visible;
+}
+
+.logo-area {
+    text-align: left;
 }
 
 section {
