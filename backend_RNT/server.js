@@ -1,9 +1,11 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const port = 3000;
 
 // Middleware to handle JSON data (essential for your POST requests later)
-app.use(express.json());
+app.use(express.json());  // This allows the server to read POST data
+app.use(cors());
 
 const products = [
     {
@@ -97,7 +99,9 @@ const products = [
 ];
 
 
-// 1. YOUR FIRST GET ROUTE
+//ROUTES
+
+// 1.  FIRST GET ROUTE
 // This is what happens when you visit http://localhost:3000/
 app.get('/', (req, res) => {
     res.send('<h1>Welcome to RNT Atelier Backend</h1><p>The server is running successfully.</p>');
@@ -108,7 +112,18 @@ app.get('/api/products', (req, res) => {
     res.json(products);
 });
 
-// 3. START THE SERVER
+// This is the LOGIN route (Requirement: POST - The "Secure One")
+app.post('/api/login', (req, res) => {
+    const { email, password } = req.body;
+    // Simple check for now
+    if (email && password) {
+        res.json({ success: true, message: "Logged in to RNT Atelier" });
+    } else {
+        res.status(400).json({ success: false, message: "Details required" });
+    }
+});
+
+// 5. START SERVER (Opening the Shop)
 app.listen(port, () => {
     console.log(`RNT Server is glowing at http://localhost:${port}`);
 });
