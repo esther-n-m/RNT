@@ -168,30 +168,27 @@ function renderCollection(category) {
     const filtered = products.filter(product => product.category === category);
 
     filtered.forEach((product) => {
-        const article = document.createElement("article");
-        article.className = "product-card";
-        article.innerHTML = `
+    const article = document.createElement("article");
+    article.className = "product-card";
+    
+    // This part makes the card clickable and sends data to product.html
+    article.innerHTML = `
+        <a href="product.html?name=${encodeURIComponent(product.name)}" style="text-decoration: none; color: inherit;">
             <img src="${product.image}" alt="${product.name}">
             <h3>${product.name}</h3>
-            <p class="description">${product.description}</p>
-            <p class="price">KES ${product.price.toLocaleString()}</p>
-            <button class="add-btn">Add to Collection</button>
-        `;
+        </a>
+        <p class="description">${product.description}</p>
+        <p class="price">KES ${product.price.toLocaleString()}</p>
+        <button class="add-btn">Add to Collection</button>
+    `;
 
-        article.querySelector(".add-btn").addEventListener("click", () => {
-            const existing = cart.find(item => item.name === product.name);
-            if (existing) {
-                existing.quantity += 1;
-            } else {
-                cart.push({ ...product, quantity: 1 });
-            }
-            saveCart();
-            renderCart();
-            openCart(); // This opens the drawer ONLY when a button is clicked
-        });
-        productsContainer.appendChild(article);
-
+    article.querySelector(".add-btn").addEventListener("click", () => {
+        addToCart(product.name);
     });
+    productsContainer.appendChild(article);
+});
+
+    
 }
 
 function renderCart() {
@@ -263,7 +260,7 @@ function renderCart() {
                     <span style="color: #c9a45c; font-weight: 600; font-size: 1.1rem;">KES ${calculateTotal().toLocaleString()}</span>
                 </div>
                 <button class="checkout-btn" 
-                        onclick="window.open('checkout.html', '_blank')" 
+                        onclick="window.location.href = 'checkout.html';" 
                         style="width: 100%; background: #c9a45c; color: #0b0b0e; padding: 18px; border: none; text-transform: uppercase; letter-spacing: 3px; font-weight: bold; cursor: pointer; font-size: 0.75rem; transition: 0.3s;">
                     Proceed to Checkout
                 </button>
@@ -272,7 +269,25 @@ function renderCart() {
     }
 }
 
-// 5. INITIALIZATION (Kickstart the site)
-renderCollection('candle');
-renderCart(); // Call this so the cart loads items from LocalStorage on refresh
+// 5. INITIALIZATION (The "Brain" of the page)
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Render the products (Defaults to candles)
+    if (productsContainer) {
+        renderCollection('candle');
+    }
+    
+    // 2. Load the cart from LocalStorage
+    renderCart(); 
 
+    // 3. Handle the Login -> My Account Swap
+    const authLink = document.getElementById('auth-link');
+    if (authLink) {
+        const isLoggedIn = localStorage.getItem("isLoggedIn");
+        if (isLoggedIn === "true") {
+            authLink.innerText = "My Account";
+            authLink.href = "account.html";
+            
+            authLink.removeAttribute("target"); 
+        }
+    }
+});

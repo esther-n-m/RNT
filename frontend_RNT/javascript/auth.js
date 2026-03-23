@@ -39,10 +39,16 @@ document.addEventListener('DOMContentLoaded', () => {
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
             
-            // 1. In a real app, you'd verify the password here
-            console.log("Login successful!");
-        
-            // 2. Redirect the user back to the shop
+            // 1. Get the email (or name) the user typed in
+            // Assuming your login form has an input with name="email" or similar
+            const emailInput = loginForm.querySelector('input[type="email"]');
+            const userEmail = emailInput ? emailInput.value : "Valued Client";
+
+            // 2. Save data
+            localStorage.setItem("userName", userEmail); 
+            localStorage.setItem("isLoggedIn", "true");
+            
+            // 3. Redirect to account
             window.location.href = "index.html"; 
         });
     }
