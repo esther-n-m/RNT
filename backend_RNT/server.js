@@ -3,6 +3,9 @@ const cors = require('cors');
 const app = express();
 const port = 3000;
 
+const User = require('./models/user');
+const Product = require('./models/product');
+
 // Middleware to handle JSON data (essential for your POST requests later)
 app.use(express.json());  // This allows the server to read POST data
 app.use(cors());
@@ -108,8 +111,13 @@ app.get('/', (req, res) => {
 });
 
 // 2. A ROUTE FOR YOUR PRODUCTS (Requirement: GET)
-app.get('/api/products', (req, res) => {
-    res.json(products);
+app.get('/api/products', async (req, res) => {
+    try {
+        const allProducts = await Product.find(); // Fetches everything from MongoDB
+        res.json(allProducts);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching the collection" });
+    }
 });
 
 // This is the LOGIN route (Requirement: POST - The "Secure One")
