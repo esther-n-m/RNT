@@ -1,3 +1,52 @@
+
+
+async function handleLogin(email, password) {
+    try {
+        const response = await fetch('http://localhost:3000/api/login', {
+            method: 'POST', // The Secure One
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            localStorage.setItem("isLoggedIn", "true");
+            // Also save the username if returned by the server
+            if (result.user) localStorage.setItem("userName", result.user.name);
+            window.location.href = "account.html";
+        } else {
+            alert(result.message || "Access Denied: Check your credentials.");
+        }
+    } catch (error) {
+        console.error("Login Error:", error);
+        alert("Could not connect to the server. Is your backend running?");
+    }
+}
+
+//re-direct back to index.html
+document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById('login-form');
+    
+    if (loginForm) {
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // 1. Get the values from the inputs
+            const emailInput = loginForm.querySelector('input[type="email"]');
+            const passwordInput = loginForm.querySelector('input[type="password"]');
+            
+            const email = emailInput ? emailInput.value : "";
+            const password = passwordInput ? passwordInput.value : "";
+
+            // 2. Call the new handleLogin function instead of the old localStorage logic
+            handleLogin(email, password);
+        });
+    }
+});
+
 function switchTab(type) {
  //console.log("Switching to:", type); // This helps us debug in the browser console
 
@@ -30,26 +79,3 @@ function switchTab(type) {
         registerTab.setAttribute('aria-selected', 'false');
     }
 }
-
-//re-direct back to index.html
-document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.getElementById('login-form');
-    
-    if (loginForm) {
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            // 1. Get the email (or name) the user typed in
-            // Assuming your login form has an input with name="email" or similar
-            const emailInput = loginForm.querySelector('input[type="email"]');
-            const userEmail = emailInput ? emailInput.value : "Valued Client";
-
-            // 2. Save data
-            localStorage.setItem("userName", userEmail); 
-            localStorage.setItem("isLoggedIn", "true");
-            
-            // 3. Redirect to account
-            window.location.href = "index.html"; 
-        });
-    }
-});
