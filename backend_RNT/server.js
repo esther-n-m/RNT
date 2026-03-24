@@ -127,3 +127,43 @@ app.post('/api/login', (req, res) => {
 app.listen(port, () => {
     console.log(`RNT Server is glowing at http://localhost:${port}`);
 });
+
+require('dotenv').config();
+const mongoose = require('mongoose');
+
+// Connect to the Cloud
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log("RNT Atelier is now connected to the Cloud "))
+    .catch(err => console.error("Cloud Connection Error:", err));
+
+
+const User = require('./models/user');
+
+// Professional "Register" Route (POST)
+app.post('/api/register', async (req, res) => {
+    try {
+        const { name, email, password } = req.body;
+
+        // 1. Create a new user instance based on our Schema
+        const newUser = new User({ 
+            name, 
+            email, 
+            password 
+        });
+
+        // 2. Save the document to MongoDB Atlas
+        await newUser.save();
+
+        // 3. Respond with success
+        res.status(201).json({ 
+            success: true, 
+            message: "Welcome to the RNT Atelier family!" 
+        });
+    } catch (error) {
+        console.error("Registration Error:", error);
+        res.status(400).json({ 
+            success: false, 
+            message: "Registration failed. This email may already be in use." 
+        });
+    }
+});
