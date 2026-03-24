@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Atelier | Account</title>
     <link rel="stylesheet" href="css/style.css">
-    <script src="javascript/account.js"></script>
+    
 </head>
 <body style="background: #0b0b0e; color: #fff;">
     <div class="dashboard-wrapper" style="display: grid; grid-template-columns: 250px 1fr; max-width: 1000px; margin: 100px auto;">
@@ -15,12 +15,13 @@
             <ul style="list-style: none; padding: 0; margin-top: 40px;">
                 <li style="margin-bottom: 20px;"><a href="#" style="color: #fff; text-decoration: none;">Order History</a></li>
                 <li style="margin-bottom: 20px;"><a href="#" style="color: #fff; text-decoration: none;">Saved Address</a></li>
-                <li><a href="index.html" onclick="performLogout()" style="color: #888; text-decoration: none;">Logout</a></li>
+                <!--ensures the logout happens first before going to another page-->
+                <li><a href="javascript:void(0)" onclick="performLogout()" style="color: #888; text-decoration: none;">Logout</a></li>
             </ul>
         </nav>
 
         <main style="padding: 20px 40px;">
-            <h1>Welcome back, Valued Client</h1>
+            <h1 id="welcome-message">Welcome back, Valued Client</h1>
             <section id="order-history">
                 <h3 style="color: #c9a45c; margin-top: 40px;">Previous Collections</h3>
                 <div class="order-item" style="border: 1px solid #2a2a35; padding: 20px; margin-top: 20px;">
@@ -29,5 +30,7 @@
             </section>
         </main>
     </div>
+
+    <script src="javascript/account.js"></script>
 </body>
 </html>
