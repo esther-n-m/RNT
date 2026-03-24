@@ -60,7 +60,8 @@ window.filterBy = (category) => {
     //  Update the tracking variable immediately
     currentCategory = category;
     //  Refresh the product list
-    renderCollection(category);
+    //renderCollection(category); no longer exists
+    loadProductsFromServer(category); //  server-loading function 
     //   Refresh the cart so the empty button text updates
     renderCart();
     document.querySelectorAll('.filter-link').forEach(link => {
@@ -71,6 +72,27 @@ window.filterBy = (category) => {
         }
     });
 };
+
+function renderCollectionWithData(productsToDisplay) {
+    if (!productsContainer) return;
+    productsContainer.innerHTML = "";
+
+    productsToDisplay.forEach((product) => {
+        const article = document.createElement("article");
+        article.className = "product-card";
+        
+        article.innerHTML = `
+            <a href="product.html?name=${encodeURIComponent(product.name)}" style="text-decoration: none; color: inherit;">
+                <img src="${product.image}" alt="${product.name}">
+                <h3>${product.name}</h3>
+            </a>
+            <p class="description">${product.description}</p>
+            <p class="price">KES ${product.price.toLocaleString()}</p>
+            <button class="add-btn" onclick="addToCart('${product.name}')">Add to Collection</button>
+        `;
+        productsContainer.appendChild(article);
+    });
+}
 
 // 4. RENDERING FUNCTIONS (The "Expert" versions)
 async function loadProductsFromServer(category) {
@@ -167,10 +189,10 @@ function renderCart() {
 
 // 5. INITIALIZATION (The "Brain" of the page)
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Render the products (Defaults to candles)
     if (productsContainer) {
-        renderCollection('candle');
-    }
+    // This tells the frontend to ask the backend for data immediately
+    loadProductsFromServer('candle');
+}
     
     // 2. Load the cart from LocalStorage
     renderCart(); 
