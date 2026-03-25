@@ -118,6 +118,8 @@ async function loadProductsFromServer(category) {
         // This is the GET request your lecturer asked for
         const response = await fetch('http://localhost:3000/api/products');
         const products = await response.json();
+
+        localStorage.setItem("currentProducts", JSON.stringify(products));
         
         // Now filter and render using the data from the backend
         const filtered = products.filter(p => p.category === category);
