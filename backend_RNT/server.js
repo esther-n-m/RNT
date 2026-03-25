@@ -1,14 +1,13 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-require('dotenv').config();
-
-const app = express();
-const port = 3000;
-
 
 const User = require('./models/user');
 const Product = require('./models/product');
+
+const app = express();
+const port = 3000;
 
 // Middleware to handle JSON data (essential for your POST requests later)
 app.use(express.json());  // This allows the server to read POST data
@@ -112,31 +111,48 @@ mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("RNT Atelier is now connected to the Cloud "))
     .catch(err => console.error("Cloud Connection Error:", err));
 
-//ROUTES
-
 // 1.  FIRST GET ROUTE
 // This is what happens when you visit http://localhost:3000/
 app.get('/', (req, res) => {
     res.send('<h1> RNT Atelier Backend</h1>');
 });
 
-// 2. A ROUTE FOR YOUR PRODUCTS (Requirement: GET)
+// Add this temporarily to server.js
+app.get('/api/seed-products', async (req, res) => {
+    try {
+        // This is the data currently hardcoded in your server.js
+        const startProducts = [
+            { name: "Vanilla Scented Candle", category: "candle", price: 1200, description: "Soft vanilla scent...", image: "images/Vanilla_Scented_Candle.png" },
+            { name: "Citrus Scented Candle", category: "candle", price: 1600, description: "Fresh citrus blend...", image: "images/Citrus_Scented_Candle.png" },
+            // ... Add the rest of your items here
+        ];
+
+        await Product.insertMany(startProducts);
+        res.send("Atelier Collection successfully uploaded to the Cloud! 🕯️✨");
+    } catch (error) {
+        res.status(500).send("Error seeding database: " + error.message);
+    }
+});
+
+//ROUTES
+
+// Products Route
 app.get('/api/products', async (req, res) => {
     try {
-        const allProducts = await Product.find(); // Fetches everything from MongoDB
+        const allProducts = await Product.find(); 
         res.json(allProducts);
     } catch (error) {
         res.status(500).json({ message: "Error fetching the collection" });
     }
 });
 
-//  LOGIN route 
+// Login Route
 app.post('/api/login', async (req, res) => {
     const { email, password } = req.body;
     try {
-        const user = await User.findOne({ email: email.toLowerCase(), password: password });
-        if (user) {
-            res.json({ success: true, user: { name: user.name }, message: "Welcome back!" });
+        const foundUser = await User.findOne({ email: email.toLowerCase(), password: password });
+        if (foundUser) {
+            res.json({ success: true, user: { name: foundUser.name }, message: "Welcome back!" });
         } else {
             res.status(401).json({ success: false, message: "Invalid credentials" });
         }
@@ -145,6 +161,7 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
+// Register Route
 app.post('/api/register', async (req, res) => {
     try {
         const { name, email, password } = req.body;
@@ -152,7 +169,7 @@ app.post('/api/register', async (req, res) => {
         await newUser.save();
         res.status(201).json({ success: true, message: "Welcome to the family!" });
     } catch (error) {
-        res.status(400).json({ success: false, message: "Email already exists." });
+        res.status(400).json({ success: false, message: "Registration failed. Email might already exist." });
     }
 });
 
