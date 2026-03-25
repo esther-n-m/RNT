@@ -1,7 +1,11 @@
 const express = require('express');
 const cors = require('cors');
+const mongoose = require('mongoose');
+require('dotenv').config();
+
 const app = express();
 const port = 3000;
+
 
 const User = require('./models/user');
 const Product = require('./models/product');
@@ -10,6 +14,7 @@ const Product = require('./models/product');
 app.use(express.json());  // This allows the server to read POST data
 app.use(cors());
 
+/*
 const products = [
     {
         name: "Vanilla Scented Candle",
@@ -100,14 +105,19 @@ const products = [
     }
 
 ];
+*/
 
+// DB Connection
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log("RNT Atelier is now connected to the Cloud "))
+    .catch(err => console.error("Cloud Connection Error:", err));
 
 //ROUTES
 
 // 1.  FIRST GET ROUTE
 // This is what happens when you visit http://localhost:3000/
 app.get('/', (req, res) => {
-    res.send('<h1>Welcome to RNT Atelier Backend</h1><p>The server is running successfully.</p>');
+    res.send('<h1> RNT Atelier Backend</h1>');
 });
 
 // 2. A ROUTE FOR YOUR PRODUCTS (Requirement: GET)
@@ -120,58 +130,33 @@ app.get('/api/products', async (req, res) => {
     }
 });
 
-// This is the LOGIN route (Requirement: POST - The "Secure One")
-app.post('/api/login', (req, res) => {
+//  LOGIN route 
+app.post('/api/login', async (req, res) => {
     const { email, password } = req.body;
-    // Simple check for now
-    if (email && password) {
-        res.json({ success: true, message: "Logged in to RNT Atelier" });
-    } else {
-        res.status(400).json({ success: false, message: "Details required" });
+    try {
+        const user = await User.findOne({ email: email.toLowerCase(), password: password });
+        if (user) {
+            res.json({ success: true, user: { name: user.name }, message: "Welcome back!" });
+        } else {
+            res.status(401).json({ success: false, message: "Invalid credentials" });
+        }
+    } catch (err) {
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+});
+
+app.post('/api/register', async (req, res) => {
+    try {
+        const { name, email, password } = req.body;
+        const newUser = new User({ name, email, password });
+        await newUser.save();
+        res.status(201).json({ success: true, message: "Welcome to the family!" });
+    } catch (error) {
+        res.status(400).json({ success: false, message: "Email already exists." });
     }
 });
 
 // 5. START SERVER (Opening the Shop)
 app.listen(port, () => {
     console.log(`RNT Server is glowing at http://localhost:${port}`);
-});
-
-require('dotenv').config();
-const mongoose = require('mongoose');
-
-// Connect to the Cloud
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log("RNT Atelier is now connected to the Cloud "))
-    .catch(err => console.error("Cloud Connection Error:", err));
-
-
-const User = require('./models/user');
-
-// Professional "Register" Route (POST)
-app.post('/api/register', async (req, res) => {
-    try {
-        const { name, email, password } = req.body;
-
-        // 1. Create a new user instance based on our Schema
-        const newUser = new User({ 
-            name, 
-            email, 
-            password 
-        });
-
-        // 2. Save the document to MongoDB Atlas
-        await newUser.save();
-
-        // 3. Respond with success
-        res.status(201).json({ 
-            success: true, 
-            message: "Welcome to the RNT Atelier family!" 
-        });
-    } catch (error) {
-        console.error("Registration Error:", error);
-        res.status(400).json({ 
-            success: false, 
-            message: "Registration failed. This email may already be in use." 
-        });
-    }
 });

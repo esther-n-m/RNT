@@ -73,27 +73,22 @@ window.filterBy = (category) => {
     });
 };
 
-//find the product details from the data your server sent and add them to your cart.
 function addToCart(productName) {
-    // We fetch the latest products from the server to ensure we have the right price
-    fetch('http://localhost:3000/api/products')
-        .then(res => res.json())
-        .then(products => {
-            const product = products.find(p => p.name === productName);
-            
-            if (product) {
-                const existingItem = cart.find(item => item.name === productName);
-                if (existingItem) {
-                    existingItem.quantity += 1;
-                } else {
-                    cart.push({ ...product, quantity: 1 });
-                }
-                
-                saveCart();
-                renderCart();
-                openCart(); // Automatically show the drawer
-            }
-        });
+    // Optimization: Find the product in the local container instead of fetching the whole DB again
+    const productsOnPage = JSON.parse(localStorage.getItem("currentProducts")) || [];
+    const product = productsOnPage.find(p => p.name === productName);
+
+    if (product) {
+        const existingItem = cart.find(item => item.name === productName);
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cart.push({ ...product, quantity: 1 });
+        }
+        saveCart();
+        renderCart();
+        openCart();
+    }
 }
 
 function renderCollectionWithData(productsToDisplay) {

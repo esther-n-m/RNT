@@ -26,23 +26,47 @@ async function handleLogin(email, password) {
     }
 }
 
+async function handleRegister(name, email, password) {
+    try {
+        const response = await fetch('http://localhost:3000/api/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, password })
+        });
+        const result = await response.json();
+        if (result.success) {
+            alert("Registration successful! Please login.");
+            switchTab('login');
+        } else {
+            alert(result.message);
+        }
+    } catch (error) {
+        alert("Registration failed. Server might be down.");
+    }
+}
+
 //re-direct back to index.html
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('login-form');
-    
+    const registerForm = document.getElementById('register-form'); // Target the register form
+
     if (loginForm) {
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            
-            // 1. Get the values from the inputs
-            const emailInput = loginForm.querySelector('input[type="email"]');
-            const passwordInput = loginForm.querySelector('input[type="password"]');
-            
-            const email = emailInput ? emailInput.value : "";
-            const password = passwordInput ? passwordInput.value : "";
-
-            // 2. Call the new handleLogin function instead of the old localStorage logic
+            const email = loginForm.querySelector('input[type="email"]').value;
+            const password = loginForm.querySelector('input[type="password"]').value;
             handleLogin(email, password);
+        });
+    }
+
+    if (registerForm) {
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Get values from the registration inputs
+            const name = registerForm.querySelector('input[type="text"]').value;
+            const email = registerForm.querySelector('input[type="email"]').value;
+            const password = registerForm.querySelector('input[type="password"]').value;
+            handleRegister(name, email, password);
         });
     }
 });
