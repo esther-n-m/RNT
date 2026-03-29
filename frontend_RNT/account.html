@@ -1,22 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Atelier | Account</title>
     <link rel="stylesheet" href="css/style.css">
-    
+
 </head>
+
 <body style="background: #0b0b0e; color: #fff;">
-    <div class="dashboard-wrapper" style="display: grid; grid-template-columns: 250px 1fr; max-width: 1000px; margin: 100px auto;">
-        
+    <div class="dashboard-wrapper"
+        style="display: grid; grid-template-columns: 250px 1fr; max-width: 1000px; margin: 100px auto;">
+
         <nav style="border-right: 1px solid #2a2a35; padding: 20px;">
             <h2 style="font-size: 1rem; color: #c9a45c;">MY ATELIER</h2>
             <ul style="list-style: none; padding: 0; margin-top: 40px;">
-                <li style="margin-bottom: 20px;"><a href="#" style="color: #fff; text-decoration: none;">Order History</a></li>
-                <li style="margin-bottom: 20px;"><a href="#" style="color: #fff; text-decoration: none;">Saved Address</a></li>
+                <li style="margin-bottom: 20px;"><a href="#" style="color: #fff; text-decoration: none;">Order
+                        History</a></li>
+                <li style="margin-bottom: 20px;"><a href="#" style="color: #fff; text-decoration: none;">Saved
+                        Address</a></li>
                 <!--ensures the logout happens first before going to another page-->
-                <li><a href="javascript:void(0)" onclick="performLogout()" style="color: #888; text-decoration: none;">Logout</a></li>
+                <li><a href="javascript:void(0)" onclick="performLogout()"
+                        style="color: #888; text-decoration: none;">Logout</a></li>
             </ul>
         </nav>
 
@@ -27,10 +33,19 @@
                 <div class="order-item" style="border: 1px solid #2a2a35; padding: 20px; margin-top: 20px;">
                     <p>Order #RNT-8821 | Status: Delivered | Total: KES 4,500</p>
                 </div>
+
+                <div style="margin-top: 40px; text-align: center;">
+                    <a href="index.html"
+                        style="text-decoration: none; border: 1px solid #c9a45c; color: #c9a45c; padding: 15px 30px; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; transition: 0.3s;">
+                        Return to Collection
+                    </a>
+                </div>
+
             </section>
         </main>
     </div>
 
     <script src="javascript/account.js"></script>
 </body>
+
 </html>

@@ -216,12 +216,50 @@ function renderCart() {
                     <span style="color: #c9a45c; font-weight: 600; font-size: 1.1rem;">KES ${calculateTotal().toLocaleString()}</span>
                 </div>
                 <button class="checkout-btn" 
-                        onclick="window.location.href = 'checkout.html';" 
-                        style="width: 100%; background: #c9a45c; color: #0b0b0e; padding: 18px; border: none; text-transform: uppercase; letter-spacing: 3px; font-weight: bold; cursor: pointer; font-size: 0.75rem; transition: 0.3s;">
-                    Proceed to Checkout
-                </button>
+        onclick="processCheckout()" 
+        style="width: 100%; background: #c9a45c; color: #0b0b0e; padding: 18px; border: none; text-transform: uppercase; letter-spacing: 3px; font-weight: bold; cursor: pointer; font-size: 0.75rem; transition: 0.3s;">
+    Finalize Collection
+</button>
             </div>
         `;
+    }
+}
+
+async function processCheckout() {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    if (cart.length === 0) return alert("Your collection is empty!");
+
+    // CHECK: Is the user logged in?
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    
+    if (isLoggedIn !== "true") {
+        alert("Please sign in to your Atelier account to finalize your collection.");
+        window.location.href = 'login.html'; // Send them to login
+        return; // Stop the function here
+    }
+
+    // If they ARE logged in, proceed with the order
+    const orderData = {
+        items: cart,
+        totalAmount: calculateTotal(),
+        userEmail: localStorage.getItem("userEmail") || "Member" 
+    };
+
+    try {
+        const response = await fetch('http://localhost:3000/api/orders', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(orderData)
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            alert("Order confirmed! Your candles are being prepared. 🕯️");
+            localStorage.removeItem("cart");
+            window.location.href = 'index.html';
+        }
+    } catch (error) {
+        console.error("Checkout error:", error);
     }
 }
 
