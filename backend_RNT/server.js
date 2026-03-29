@@ -6,15 +6,19 @@ const mongoose = require('mongoose');
 const User = require('./models/user');
 const Product = require('./models/product');
 const Order = require('./models/order');
+const crypto = require('crypto');
 
 const app = express();
 const port = 3000;
+const path = require('path');
 
 // Middleware to handle JSON data (essential for your POST requests later)
 app.use(express.json());  // This allows the server to read POST data
 app.use(cors());
+app.use(express.urlencoded({ extended: true }));
 // This tells the server: "If someone asks for a file in /images, give it to them!"
 app.use('/images', express.static('images'));
+app.use(express.static(path.join(__dirname, '..', 'frontend_RNT')));
 
 
 const nodemailer = require('nodemailer');
@@ -328,6 +332,75 @@ app.get('/api/admin/orders', async (req, res) => {
     } catch (error) {
         console.error("Admin Fetch Error:", error);
         res.status(500).json({ message: "Error fetching orders" });
+    }
+});
+
+// ROUTE 1: Request a reset (Sends the email)
+app.post('/api/forgot-password', async (req, res) => {
+    try {
+        const { email } = req.body;
+        const user = await User.findOne({ email });
+
+        if (!user) return res.status(404).json({ message: "No account with that email exists." });
+
+        // Create a unique token
+        const token = crypto.randomBytes(20).toString('hex');
+        
+        // Save token to user (Expires in 1 hour)
+        user.resetPasswordToken = token;
+        user.resetPasswordExpires = Date.now() + (24 * 60 * 60 * 1000);
+        await user.save();
+
+        const resetUrl = `http://127.0.0.1:5500/frontend_RNT/reset-password.html?token=${token}`;
+
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: user.email,
+            subject: 'RNT Atelier | Password Reset',
+            text: `You requested a password reset. Click the link below to set a new one:\n\n${resetUrl}\n\nIf you didn't request this, ignore this email.`
+        };
+
+        transporter.sendMail(mailOptions, (err) => {
+            if (err) return res.status(500).json({ message: "Error sending email." });
+            res.json({ success: true, message: "Check your email for the reset link!" });
+        });
+    } catch (error) {
+        res.status(500).json({ message: "Server error." });
+    }
+});
+
+// ROUTE 2: Update the password (The final step)
+app.post('/api/reset-password/:token', async (req, res) => {
+    try {
+        const { password } = req.body;
+        
+        // FIND THE USER
+        const user = await User.findOne({
+            resetPasswordToken: req.params.token
+        });
+
+        if (!user) {
+            return res.status(400).json({ success: false, message: "Token is invalid." });
+        }
+
+        // CHECK EXPIRATION MANUALLY
+        console.log("Current Time:", new Date());
+        console.log("Token Expires At:", user.resetPasswordExpires);
+
+        if (user.resetPasswordExpires < Date.now()) {
+            return res.status(400).json({ success: false, message: "Token has expired." });
+        }
+
+        // UPDATE PASSWORD
+        user.password = password; 
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+        await user.save();
+
+        res.json({ success: true, message: "Password updated successfully!" });
+    } catch (error) {
+        console.error("Reset Error:", error);
+        res.status(500).json({ success: false, message: "Server error." });
     }
 });
 
