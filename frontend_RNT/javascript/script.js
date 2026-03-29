@@ -112,7 +112,10 @@ function renderCollectionWithData(productsToDisplay) {
         article.className = "product-card";
         
         // 2. Combine the server URL with the image path from the database
-        const fullImagePath = `${serverURL}${product.image}`;
+        //const fullImagePath = `${serverURL}${product.image}`;
+        //handles image path errors
+        const cleanImagePath = product.image.startsWith('/') ? product.image : `/${product.image}`;
+        const fullImagePath = `${serverURL}${cleanImagePath}`;
 
         article.innerHTML = `
             <a href="product.html?name=${encodeURIComponent(product.name)}" style="text-decoration: none; color: inherit;">
