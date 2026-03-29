@@ -95,13 +95,19 @@ function renderCollectionWithData(productsToDisplay) {
     if (!productsContainer) return;
     productsContainer.innerHTML = "";
 
+    // 1. Define the backend address
+    const serverURL = "http://localhost:3000/";
+
     productsToDisplay.forEach((product) => {
         const article = document.createElement("article");
         article.className = "product-card";
         
+        // 2. Combine the server URL with the image path from the database
+        const fullImagePath = `${serverURL}${product.image}`;
+
         article.innerHTML = `
             <a href="product.html?name=${encodeURIComponent(product.name)}" style="text-decoration: none; color: inherit;">
-                <img src="${product.image}" alt="${product.name}">
+                <img src="${fullImagePath}" alt="${product.name}">
                 <h3>${product.name}</h3>
             </a>
             <p class="description">${product.description}</p>
