@@ -130,7 +130,7 @@ app.get('/api/seed-products', async (req, res) => {
         category: "candle",
         description: "A soft vanilla scent that creates a calm, cozy atmosphere for evenings, self-care moments and unwinding after a long day.",
         price: 1200,
-        image: "images/Vanilla_Scented_Candle.png"
+        image: "/images/Vanilla_Scented_Candle.png"
     },
 
     {

@@ -57,16 +57,25 @@ window.removeItem = (index) => {
 };
 
 window.filterBy = (category) => {
-    //  Update the tracking variable immediately
     currentCategory = category;
-    //  Refresh the product list
-    //renderCollection(category); no longer exists
-    loadProductsFromServer(category); //  server-loading function 
-    //   Refresh the cart so the empty button text updates
+    
+    // Get the products we already saved to the vault
+    const products = JSON.parse(localStorage.getItem("currentProducts")) || [];
+    
+    if (products.length > 0) {
+        // Just filter the data we already have!
+        const filtered = products.filter(p => p.category === category);
+        renderCollectionWithData(filtered);
+    } else {
+        // If the vault is empty (first time), then ask the server
+        loadProductsFromServer(category);
+    }
+
     renderCart();
+    
+    // UI: Update the gold glow on the links
     document.querySelectorAll('.filter-link').forEach(link => {
         link.classList.remove('active');
-        // Match the text to make sure the right link glows gold
         if (link.innerText.toLowerCase().includes(category)) {
             link.classList.add('active');
         }
@@ -96,7 +105,7 @@ function renderCollectionWithData(productsToDisplay) {
     productsContainer.innerHTML = "";
 
     // 1. Define the backend address
-    const serverURL = "http://localhost:3000/";
+    const serverURL = "http://localhost:3000";
 
     productsToDisplay.forEach((product) => {
         const article = document.createElement("article");
