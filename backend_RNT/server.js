@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 
 const User = require('./models/user');
 const Product = require('./models/product');
+const Order = require('./models/order');
 
 const app = express();
 const port = 3000;
@@ -253,11 +254,32 @@ app.post('/api/login', async (req, res) => {
 app.post('/api/register', async (req, res) => {
     try {
         const { name, email, password } = req.body;
+
+        // NEW: Validation Check
+        if (!name || !email || !password) {
+            return res.status(400).json({ 
+                success: false, 
+                message: "Please fill in all fields (Name, Email, and Password)." 
+            });
+        }
+
         const newUser = new User({ name, email, password });
         await newUser.save();
         res.status(201).json({ success: true, message: "Welcome to the family!" });
     } catch (error) {
+        console.error("Registration Error:", error);
         res.status(400).json({ success: false, message: "Registration failed. Email might already exist." });
+    }
+});
+
+app.post('/api/orders', async (req, res) => {
+    try {
+        const { items, totalAmount, userEmail } = req.body;
+        const newOrder = new Order({ items, totalAmount, userEmail });
+        await newOrder.save();
+        res.status(201).json({ success: true, message: "Order placed successfully! 🕯️" });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Checkout failed." });
     }
 });
 
