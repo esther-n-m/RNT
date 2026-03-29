@@ -16,6 +16,18 @@ app.use(cors());
 // This tells the server: "If someone asks for a file in /images, give it to them!"
 app.use('/images', express.static('images'));
 
+
+const nodemailer = require('nodemailer');
+
+// Seting up the "Postman" (Transporter)
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER, //  Gmail address
+        pass: process.env.EMAIL_PASS  //  Gmail "App Password"
+    }
+});
+
 /*
 const products = [
     {
@@ -277,9 +289,45 @@ app.post('/api/orders', async (req, res) => {
         const { items, totalAmount, userEmail } = req.body;
         const newOrder = new Order({ items, totalAmount, userEmail });
         await newOrder.save();
-        res.status(201).json({ success: true, message: "Order placed successfully! 🕯️" });
+
+        // EMAIL LOGIC , send email to owner when order is placed
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: 'owner@rntatelier.com', // Put your email here
+            subject: 'New Order Received!',
+            text: `New order from ${userEmail}.\nTotal: KES ${totalAmount}\nItems: ${items.map(i => i.name).join(', ')}`
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) console.log("Email error:", error);
+            else console.log("Email sent: " + info.response);
+        });
+
+        res.status(201).json({ success: true });
     } catch (error) {
-        res.status(500).json({ success: false, message: "Checkout failed." });
+        res.status(500).json({ success: false });
+    }
+});
+
+// Get orders for a specific user , order history in account page
+app.get('/api/orders/:email', async (req, res) => {
+    try {
+        const userOrders = await Order.find({ userEmail: req.params.email });
+        res.json(userOrders);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching history" });
+    }
+});
+
+// ADMIN ROUTE: Get all orders for the shop owner
+app.get('/api/admin/orders', async (req, res) => {
+    try {
+        // .sort({ createdAt: -1 }) ensures the newest orders appear at the top
+        const allOrders = await Order.find().sort({ createdAt: -1 });
+        res.json(allOrders);
+    } catch (error) {
+        console.error("Admin Fetch Error:", error);
+        res.status(500).json({ message: "Error fetching orders" });
     }
 });
 

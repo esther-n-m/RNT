@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RNT Atelier | Admin Dashboard</title>
+    <style>
+        body { background: #0b0b0e; color: #fff; font-family: sans-serif; padding: 40px; }
+        h1 { color: #c9a45c; letter-spacing: 2px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #2a2a35; padding: 15px; text-align: left; }
+        th { background: #16161d; color: #c9a45c; text-transform: uppercase; font-size: 0.7rem; }
+        tr:hover { background: #16161d; }
+    </style>
+</head>
+<body>
+    <h1>Order Management</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Customer</th>
+                <th>Items</th>
+                <th>Total (KES)</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="admin-order-list">
+            </tbody>
+    </table>
+
+    <script>
+        async function fetchAllOrders() {
+            try {
+                const response = await fetch('http://localhost:3000/api/admin/orders');
+                const orders = await response.json();
+                const list = document.getElementById('admin-order-list');
+
+                list.innerHTML = orders.map(order => `
+                    <tr>
+                        <td>${new Date(order.createdAt).toLocaleDateString()}</td>
+                        <td>${order.userEmail}</td>
+                        <td>${order.items.map(i => i.name).join(', ')}</td>
+                        <td>${order.totalAmount.toLocaleString()}</td>
+                        <td>${order.status || 'Pending'}</td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                console.error("Failed to load orders");
+            }
+        }
+        window.onload = fetchAllOrders;
+    </script>
+</body>
+</html>

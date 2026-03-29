@@ -26,3 +26,33 @@ function performLogout() {
     // Send back to home
     window.location.href = "index.html";
 }
+
+async function loadOrderHistory() {
+    const email = localStorage.getItem("userEmail");
+    const historyContainer = document.getElementById("order-history-list"); // Ensure this ID exists in HTML
+
+    if (!email) return;
+
+    try {
+        const response = await fetch(`http://localhost:3000/api/orders/${email}`);
+        const orders = await response.json();
+
+        if (orders.length === 0) {
+            historyContainer.innerHTML = "<p>Your collection history is empty.</p>";
+            return;
+        }
+
+        historyContainer.innerHTML = orders.map(order => `
+            <div style="border-bottom: 1px solid #eee; padding: 10px 0;">
+                <p>Order Date: ${new Date(order.createdAt).toLocaleDateString()}</p>
+                <p>Total: KES ${order.totalAmount}</p>
+                <p>Status: ${order.status}</p>
+            </div>
+        `).join('');
+    } catch (error) {
+        console.error("History error:", error);
+    }
+}
+
+// Run this when the page opens
+document.addEventListener('DOMContentLoaded', loadOrderHistory);
