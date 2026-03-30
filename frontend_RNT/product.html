@@ -67,44 +67,52 @@
         const params = new URLSearchParams(window.location.search);
         const productName = params.get('name');
 
-        try {
-            // 1. Fetch live data from your Render Backend
-            const res = await fetch('https://rnt-backend.onrender.com/api/products');
-            const products = await res.json();
+        if (!productName) {
+            console.error("No product name found in URL");
+            return;
+        }
 
-            // 2. Find the specific candle in the database
+        try {
+            const res = await fetch('https://rnt-backend.onrender.com/api/products');
+            if (!res.ok) throw new Error("Server response was not ok");
+            
+            const products = await res.json();
             const product = products.find(p => p.name === productName);
 
             if (product) {
-                // Update your HTML elements with the high-end details
-                document.getElementById('product-name').innerText = product.name;
-                document.getElementById('product-title').innerText = product.name; // If you have both IDs
-                document.getElementById('product-price').innerText = `KES ${product.price.toLocaleString()}`;
-                document.getElementById('product-desc').innerText = product.description;
-                document.getElementById('main-product-image').src = product.image;
+                // We only target IDs that exist in the HTML body above
+                const nameEl = document.getElementById('product-name');
+                const priceEl = document.getElementById('product-price');
+                const descEl = document.getElementById('product-desc');
+                const imgEl = document.getElementById('main-product-image');
+
+                if(nameEl) nameEl.innerText = product.name;
+                if(priceEl) priceEl.innerText = `KES ${product.price.toLocaleString()}`;
+                if(descEl) descEl.innerText = product.description;
+                if(imgEl) imgEl.src = product.image;
+                
+                document.title = `${product.name} | RNT Atelier`; // Bonus: Updates browser tab name
             } else {
-                console.error("Product not found in the RNT collection.");
+                document.getElementById('product-name').innerText = "Product Not Found";
             }
         } catch (error) {
             console.error("Error connecting to the Atelier server:", error);
+            document.getElementById('product-name').innerText = "Server Error. Please try again.";
         }
     }
 
-    // Function to add the item to the cart
     function addToCartFromDetails() {
         const params = new URLSearchParams(window.location.search);
         const productName = params.get('name');
         
-        // Ensure script.js is loaded so addToCart exists
         if (typeof addToCart === "function") {
             addToCart(productName);
             alert(`${productName} added to your collection.`);
         } else {
-            console.error("addToCart function not found. Make sure script.js is linked.");
+            console.error("addToCart function not found in script.js");
         }
     }
 
-    // Start the loading process
     loadProductDetails();
 </script>
 </body>
