@@ -62,51 +62,50 @@
     </div>
 
 <script src="javascript/script.js"></script>
-
-    <script>
-        // Logic to load data from script.js product array
+<script>
+    async function loadProductDetails() {
         const params = new URLSearchParams(window.location.search);
         const productName = params.get('name');
 
-        // This assumes your products array is accessible (usually via script.js)
-        // For now, we find the product that matches the URL name
-        const product = products.find(p => p.name === productName);
+        try {
+            // 1. Fetch live data from your Render Backend
+            const res = await fetch('https://rnt-backend.onrender.com/api/products');
+            const products = await res.json();
 
-        function addToCartFromDetails() {
-    const params = new URLSearchParams(window.location.search);
-    const productName = params.get('name');
-    
-    // Call the original addToCart function from script.js
-    if (typeof addToCart === "function") {
-        addToCart(productName);
-        alert(`${productName} added to your collection.`);
-    }
-}
+            // 2. Find the specific candle in the database
+            const product = products.find(p => p.name === productName);
 
-        if (product) {
-            document.getElementById('product-name').innerText = product.name;
-            document.getElementById('product-price').innerText = `KES ${product.price.toLocaleString()}`;
-            document.getElementById('product-desc').innerText = product.description;
-            document.getElementById('main-product-image').src = product.image;
+            if (product) {
+                // Update your HTML elements with the high-end details
+                document.getElementById('product-name').innerText = product.name;
+                document.getElementById('product-title').innerText = product.name; // If you have both IDs
+                document.getElementById('product-price').innerText = `KES ${product.price.toLocaleString()}`;
+                document.getElementById('product-desc').innerText = product.description;
+                document.getElementById('main-product-image').src = product.image;
+            } else {
+                console.error("Product not found in the RNT collection.");
+            }
+        } catch (error) {
+            console.error("Error connecting to the Atelier server:", error);
         }
-
-async function loadProductDetails() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const productName = urlParams.get('name');
-
-    // Fetch from RENDER, not localhost
-    const res = await fetch('https://rnt-backend.onrender.com/api/products');
-    const products = await res.json(); // Now 'products' is defined!
-
-    const product = products.find(p => p.name === productName);
-    
-    if (product) {
-        document.getElementById('product-title').innerText = product.name;
-        // ... fill in the rest of your luxury details here
     }
-}
-loadProductDetails();
 
-    </script>
+    // Function to add the item to the cart
+    function addToCartFromDetails() {
+        const params = new URLSearchParams(window.location.search);
+        const productName = params.get('name');
+        
+        // Ensure script.js is loaded so addToCart exists
+        if (typeof addToCart === "function") {
+            addToCart(productName);
+            alert(`${productName} added to your collection.`);
+        } else {
+            console.error("addToCart function not found. Make sure script.js is linked.");
+        }
+    }
+
+    // Start the loading process
+    loadProductDetails();
+</script>
 </body>
 </html>

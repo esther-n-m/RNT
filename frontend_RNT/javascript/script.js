@@ -36,7 +36,10 @@ if (closeCartBtn) {
     closeCartBtn.addEventListener("click", closeCart);
 }
 // Add this so clicking the DARK AREA also closes the cart (very luxury!)
-document.getElementById("cart-overlay").addEventListener("click", closeCart);
+const cartOverlay = document.getElementById("cart-overlay");
+if (cartOverlay) {
+    cartOverlay.addEventListener("click", closeCart);
+}
 
 // AUTOMATION: Open the cart automatically when a user adds an item
 // Find your 'Add to Collection' logic and add openCart() inside the click listener
