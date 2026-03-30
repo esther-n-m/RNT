@@ -235,7 +235,7 @@ async function processCheckout() {
     
     if (isLoggedIn !== "true") {
         alert("Please sign in to your Atelier account to finalize your collection.");
-        window.location.href = 'login.html'; // Send them to login
+        window.location.href = 'auth.html'; // Send them to login
         return; // Stop the function here
     }
 
