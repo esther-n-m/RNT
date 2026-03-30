@@ -126,7 +126,7 @@ function renderCollectionWithData(productsToDisplay) {
 
         article.innerHTML = `
             <a href="product.html?name=${encodeURIComponent(product.name)}" style="text-decoration: none; color: inherit;">
-                <img src="${fullImagePath}" alt="${product.name}">
+                <img src="${product.image}" alt="${product.name}">
                 <h3>${product.name}</h3>
             </a>
             <p class="description">${product.description}</p>
