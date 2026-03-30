@@ -89,6 +89,24 @@
             document.getElementById('product-desc').innerText = product.description;
             document.getElementById('main-product-image').src = product.image;
         }
+
+async function loadProductDetails() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const productName = urlParams.get('name');
+
+    // Fetch from RENDER, not localhost
+    const res = await fetch('https://rnt-backend.onrender.com/api/products');
+    const products = await res.json(); // Now 'products' is defined!
+
+    const product = products.find(p => p.name === productName);
+    
+    if (product) {
+        document.getElementById('product-title').innerText = product.name;
+        // ... fill in the rest of your luxury details here
+    }
+}
+loadProductDetails();
+
     </script>
 </body>
 </html>

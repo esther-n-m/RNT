@@ -31,7 +31,10 @@ const closeCart = () => {
 
 // Listen for clicks on the Bag Icon and the X Close button
 document.getElementById("cart-icon-container").addEventListener("click", openCart);
-document.getElementById("close-cart").addEventListener("click", closeCart);
+const closeCartBtn = document.getElementById("close-cart");
+if (closeCartBtn) {
+    closeCartBtn.addEventListener("click", closeCart);
+}
 // Add this so clicking the DARK AREA also closes the cart (very luxury!)
 document.getElementById("cart-overlay").addEventListener("click", closeCart);
 
