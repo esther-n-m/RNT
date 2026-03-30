@@ -2,7 +2,7 @@
 
 async function handleLogin(email, password) {
     try {
-        const response = await fetch('http://localhost:3000/api/login', {
+        const response = await fetch('https://rnt-backend.onrender.com/api/login', {
             method: 'POST', // The Secure One
             headers: {
                 'Content-Type': 'application/json'
@@ -28,7 +28,7 @@ async function handleLogin(email, password) {
 
 async function handleRegister(name, email, password) {
     try {
-        const response = await fetch('http://localhost:3000/api/register', {
+        const response = await fetch('https://rnt-backend.onrender.com/api/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, email, password })

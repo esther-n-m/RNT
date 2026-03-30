@@ -105,7 +105,8 @@ function renderCollectionWithData(productsToDisplay) {
     productsContainer.innerHTML = "";
 
     // 1. Define the backend address
-    const serverURL = "http://localhost:3000";
+    //const serverURL = "http://localhost:3000";
+    const serverURL = "https://rnt-backend.onrender.com";
 
     productsToDisplay.forEach((product) => {
         const article = document.createElement("article");
@@ -134,7 +135,7 @@ function renderCollectionWithData(productsToDisplay) {
 async function loadProductsFromServer(category) {
     try {
         // This is the GET request your lecturer asked for
-        const response = await fetch('http://localhost:3000/api/products');
+        const response = await fetch('https://rnt-backend.onrender.com/api/products');
         const products = await response.json();
 
         localStorage.setItem("currentProducts", JSON.stringify(products));
@@ -246,7 +247,7 @@ async function processCheckout() {
     };
 
     try {
-        const response = await fetch('http://localhost:3000/api/orders', {
+        const response = await fetch('https://rnt-backend.onrender.com/api/orders', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(orderData)

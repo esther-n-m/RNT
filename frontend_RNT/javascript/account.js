@@ -34,7 +34,7 @@ async function loadOrderHistory() {
     if (!email) return;
 
     try {
-        const response = await fetch(`http://localhost:3000/api/orders/${email}`);
+        const response = await fetch(`https://rnt-backend.onrender.com/api/orders/${email}`);
         const orders = await response.json();
 
         if (orders.length === 0) {
